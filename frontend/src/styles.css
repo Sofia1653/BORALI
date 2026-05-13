@@ -1,1 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --black:        #0A0A09;
+            --surface:      #141413;
+            --surface2:     #1E1E1C;
+            --white:        #F5F3EE;
+            --warm:         #EDE9E0;
+            --accent:       #E8431A;
+            --accent-light: #FF6B42;
+            --gold:         #C8A96E;
+            --muted:        #8A8880;
+            --border-dark:  rgba(255,255,255,0.07);
+            --border-light: rgba(0,0,0,0.1);
+            --card-gray:    #161616;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: 'Instrument Sans', sans-serif;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        

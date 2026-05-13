@@ -1,0 +1,113 @@
+:host {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    background-color: #060605;
+    padding: clamp(40px, 8vw, 70px) clamp(20px, 5vw, 60px) clamp(28px, 5vw, 40px);
+    border-top: 1px solid var(--border-dark);
+    margin-top: auto;
+}
+
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: clamp(28px, 5vw, 60px);
+    margin-bottom: clamp(32px, 6vw, 50px);
+    max-width: 100%;
+}
+
+.footer-brand {
+    flex: 1 1 220px;
+    min-width: 0;
+}
+
+.footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(26px, 4vw, 30px);
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    color: var(--white);
+}
+
+.footer-logo span { color: var(--accent); }
+
+.footer-tagline {
+    color: rgba(245,243,238,.4);
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 320px;
+}
+
+.footer-nav-cols {
+    flex: 2 1 280px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: clamp(24px, 4vw, 40px);
+    min-width: 0;
+}
+
+.footer-col {
+    flex: 1 1 120px;
+    min-width: 0;
+}
+
+.footer-col h4 {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: rgba(245,243,238,.3);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.footer-col ul { list-style: none; }
+
+.footer-col ul li { margin-bottom: 10px; }
+
+.footer-col ul li a {
+    color: rgba(245,243,238,.55);
+    text-decoration: none;
+    font-size: 14px;
+    transition: .2s;
+    word-break: break-word;
+}
+
+.footer-col ul li a:hover { color: var(--accent); }
+
+.footer-bottom {
+    padding-top: 28px;
+    border-top: 1px solid var(--border-dark);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px 24px;
+    max-width: 100%;
+}
+
+.footer-bottom p {
+    color: rgba(245,243,238,.25);
+    font-size: 12px;
+    line-height: 1.5;
+    min-width: 0;
+}
+
+@media (max-width: 640px) {
+    .footer-nav-cols {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .footer-col {
+        flex: none;
+        width: 100%;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+    }
+}

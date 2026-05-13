@@ -1,1 +1,21 @@
-<p>navbar works!</p>
+<nav>
+    <div class="nav-bg"></div>
+    <a routerLink="/" class="nav-logo" id="nav-logo">BOR<span>ALI</span></a>
+    <ul class="nav-links">
+        <li>
+            <a
+                routerLink="/"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                id="nav-home"
+                >Eventos</a>
+        </li>
+        <li><a routerLink="/mapa" routerLinkActive="active" id="nav-mapa">Mapa</a></li>
+        <li><a routerLink="/agenda" routerLinkActive="active" id="nav-agenda">Agenda</a></li>
+        <li><a routerLink="/dashboard" routerLinkActive="active" id="nav-dash">Dashboard</a></li>
+        <li><a routerLink="/perfil" routerLinkActive="active" id="nav-perfil">Perfil</a></li>
+        <li>
+            <a routerLink="/criar-evento" routerLinkActive="active" class="nav-cta" id="nav-criar">+ Criar Evento</a>
+        </li>
+    </ul>
+</nav>

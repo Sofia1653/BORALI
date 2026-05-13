@@ -1,1 +1,39 @@
-<p>footer works!</p>
+<div class="footer-container">
+    <div class="footer-brand">
+        <div class="footer-logo">BOR<span>ALI</span></div>
+        <p class="footer-tagline">A plataforma inteligente de cultura urbana do Recife. Conectando cidadãos, artistas e a cidade.</p>
+    </div>
+    <div class="footer-nav-cols">
+        <div class="footer-col">
+            <h4>Plataforma</h4>
+            <ul>
+                <li><a
+                    routerLink="/"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                    id="footer-home"
+                    >Explorar Eventos</a>
+                </li>
+                <li><a routerLink="/mapa" routerLinkActive="active" id="footer-mapa">Mapa Cultural</a></li>
+                <li><a routerLink="/agenda" routerLinkActive="active" id="footer-agenda">Minha Agenda</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Organizadores</h4>
+            <ul>
+                <li><a routerLink="/criar-evento" routerLinkActive="active" id="footer-criar-evento">Cadastrar Evento</a></li>
+                <li><a routerLink="/dashboard" routerLinkActive="active" id="footer-dash">Dashboard</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Sobre</h4>
+            <ul>
+                <li><a href="https://sites.google.com/cesar.school/borali?usp=sharing" target="_blank">O Projeto</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="footer-bottom">
+    <p>© 2026 BORALI — Cultura Urbana do Recife</p>
+    <p>Desenvolvido com ♥ por Grupo 18 · CESAR School</p>
+</div>
