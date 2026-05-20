@@ -1,0 +1,156 @@
+.events-section {
+            padding: 20px 60px 100px;
+            background: var(--black);
+        }
+
+        .section-eyebrow {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(40px, 5vw, 72px);
+            line-height: .95;
+            margin-bottom: 30px;
+        }
+
+        .section-title em {
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        .filter-pills {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-pill {
+            padding: 9px 22px;
+            border-radius: 50px;
+            border: 1px solid var(--border-dark);
+            background: rgba(255,255,255,.03);
+            color: rgba(245,243,238,.6);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: .2s;
+            font-family: inherit;
+        }
+
+        .filter-pill.active,
+        .filter-pill:hover { background: var(--accent); color: white; border-color: var(--accent); }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 24px;
+        }
+
+        .event-card {
+            background: var(--card-gray);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: .4s ease;
+            border: 1px solid var(--border-dark);
+            cursor: pointer;
+        }
+
+        .event-card:hover { transform: translateY(-8px); border-color: var(--accent); }
+
+        .card-img-wrap {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+        }
+
+        .card-distance {
+            position: absolute;
+            top: 15px; left: 15px;
+            background: rgba(0,0,0,.65);
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            backdrop-filter: blur(5px);
+        }
+
+        .card-price-badge {
+            position: absolute;
+            top: 15px; right: 15px;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .badge-free { background: rgba(200,169,110,.2); color: var(--gold); border: 1px solid rgba(200,169,110,.3); }
+        .badge-paid { background: rgba(232,67,26,.2); color: #FF8A70; border: 1px solid rgba(232,67,26,.3); }
+
+        .card-body { padding: 24px; }
+
+        .card-category {
+            color: var(--accent);
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .card-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 28px;
+            margin: 8px 0 12px;
+            letter-spacing: .5px;
+        }
+
+        .card-info {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-dark);
+            padding-top: 16px;
+        }
+
+        .price { font-weight: 700; }
+        .price.free { color: var(--gold); }
+        .price.paid { color: var(--accent-light); }
+
+        .btn-card-action {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: .2s;
+        }
+
+        .btn-card-action:hover { background: var(--accent-light); }

@@ -1,1 +1,36 @@
-<p>home works!</p>
+<section class="events-section" id="section-eventos">
+    <span class="section-eyebrow">Eventos Próximos</span>
+    <h2 class="section-title">EXPLORE<br><em>EVENTOS</em></h2>
+
+    <div class="filter-pills">
+        @for (filtro of filtros; track filtro) {
+            <button
+            class="filter-pill"
+            [class.active]="filtroAtivo === filtro"
+            (click)="filtrarEventos(filtro)">
+            {{ filtro }}
+            </button>
+        }
+    </div>
+
+    <div class="events-grid">
+        @for (evento of eventosFiltrados; track evento.id){
+            <div class="event-card">
+                <div class="card-body">
+                    <span class="card-category">
+                    {{ evento.categoria }}
+                    </span>
+
+                    <h3 class="card-name">
+                    {{ evento.nome }}
+                    </h3>
+
+                    <div class="card-info">
+                    <span>📅 {{ evento.data }}</span>
+                    <span>📍 {{ evento.local }}</span>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
