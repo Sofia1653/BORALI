@@ -1,1 +1,57 @@
-<p>home works!</p>
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-noise"></div>
+    <div class="hero-gradient"></div>
+    <div class="hero-content">
+        <div class="hero-eyebrow">Recife · Pernambuco · Brasil</div>
+        <h1 class="hero-title">CULTURA<br>É <em>AQUI</em></h1>
+        <div class="hero-row">
+            <p class="hero-desc">Descubra shows, exposições, saraus e muito mais. A cultura do Recife numa plataforma só — inteligente, gratuita e feita pra você.</p>
+            <div class="hero-actions">
+                <button type="button" class="btn-primary" (click)="scrollParaEventos()">Explorar Eventos</button>
+                <button type="button" class="btn-ghost-white" routerLink="/mapa">Ver no Mapa</button>
+            </div>
+        </div>
+    </div>
+    <div class="hero-scroll"><div class="scroll-line"></div>scroll</div>
+</section>
+
+
+<!-- Explore Eventos -->
+<section class="events-section" id="section-eventos">
+    <span class="section-eyebrow">Eventos Próximos</span>
+    <h2 class="section-title">EXPLORE<br><em>EVENTOS</em></h2>
+
+    <div class="filter-pills">
+        @for (filtro of filtros; track filtro) {
+            <button
+            class="filter-pill"
+            [class.active]="filtroAtivo === filtro"
+            (click)="filtrarEventos(filtro)">
+            {{ filtro }}
+            </button>
+        }
+    </div>
+
+    <div class="events-grid">
+        @for (evento of eventosFiltrados; track evento.id){
+            <div class="event-card">
+                <div class="card-body">
+                    <span class="card-category">
+                    {{ evento.categoria }}
+                    </span>
+
+                    <h3 class="card-name">
+                    {{ evento.nome }}
+                    </h3>
+
+                    <div class="card-info">
+                    <span>📅 {{ evento.data }}</span>
+                    <span>📍 {{ evento.local }}</span>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
