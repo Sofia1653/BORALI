@@ -37,8 +37,7 @@ public class Evento {
     @JoinColumn(name = "organizador_id", nullable = false)
     private Usuario organizador;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "localizacao_id", nullable = false)
+    @Embedded
     private Localizacao localizacao;
 
     @ManyToMany
