@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 export interface Evento {
   id: number;
@@ -14,12 +15,19 @@ export interface Evento {
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
 
 export class Home {
+  scrollParaEventos(): void {
+    document.getElementById('section-eventos')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  }
+
   eventos: Evento[] = [
     {
       id: 1,
