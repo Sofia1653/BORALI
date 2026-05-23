@@ -1,5 +1,7 @@
-package com.cesar.borali.models;
+package com.cesar.borali.evento.domain;
 
+import com.cesar.borali.categoria.Categoria;
+import com.cesar.borali.usuario.domain.Usuario;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,15 +30,14 @@ public class Evento {
     private LocalDateTime dataHora;
 
     private Double preco;
-    
+
     private String linkExterno;
 
     @ManyToOne
     @JoinColumn(name = "organizador_id", nullable = false)
     private Usuario organizador;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "localizacao_id", nullable = false)
+    @Embedded
     private Localizacao localizacao;
 
     @ManyToMany

@@ -1,13 +1,16 @@
-package com.cesar.borali.models;
+package com.cesar.borali.usuario.domain;
 
+import com.cesar.borali.categoria.Categoria;
+import com.cesar.borali.evento.domain.Evento;
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name = "tb_usuario")
 public class Usuario {
@@ -27,7 +30,7 @@ public class Usuario {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TipoUsuario tipo;
+    private PerfilUsuario tipo;
 
     @ManyToMany
     @JoinTable(
@@ -56,11 +59,7 @@ public class Usuario {
     )
     private List<Usuario> amigos = new ArrayList<>();
 
-    public enum TipoUsuario {
-        CIDADAO, ORGANIZADOR, GESTOR_PUBLICO
-    }
-
-    public Usuario(String nome, String email, String senha, TipoUsuario tipo) {
+    public Usuario(String nome, String email, String senha, PerfilUsuario tipo) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;

@@ -1,4 +1,4 @@
-package com.cesar.borali.models;
+package com.cesar.borali.evento.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;

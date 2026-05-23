@@ -1,4 +1,4 @@
-package com.cesar.borali.models;
+package com.cesar.borali.categoria;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -16,4 +16,8 @@ public class Categoria {
 
     @Column(nullable = false, unique = true)
     private String nome;
+
+    public Categoria(String nome) {
+        this.nome = nome;
+    }
 }

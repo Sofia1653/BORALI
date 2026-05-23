@@ -1,4 +1,4 @@
-package com.cesar.borali.models;
+package com.cesar.borali.evento.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -6,13 +6,8 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Entity
-@Table(name = "tb_localizacao")
+@Embeddable
 public class Localizacao {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @Column(nullable = false)
     private Double latitude;
@@ -25,4 +20,10 @@ public class Localizacao {
 
     private String bairro;
 
+    public Localizacao(Double latitude, Double longitude, String endereco, String bairro) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.endereco = endereco;
+        this.bairro = bairro;
+    }
 }
