@@ -2,6 +2,10 @@
 
 Este é o projeto Borali, composto por um backend em Java com Spring Boot (utilizando PostgreSQL como banco de dados) e um frontend em Angular.
 
+## Links importantes de Dados:
+* (Colab)[https://colab.research.google.com/drive/1ySObSrMZVLPjAbLPajN6X_jbYYKxduCu?usp=sharing]
+* (Docs)[https://docs.google.com/document/d/1ypHtN37TZuM2q_GBxEnuExDmdFfz7SA_OwX9WoAtSv4/edit?usp=sharing]
+
 ## Pré-requisitos
 
 Para rodar o projeto, você precisará ter instalado em sua máquina:
