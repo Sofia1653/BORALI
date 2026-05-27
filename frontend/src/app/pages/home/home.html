@@ -73,10 +73,18 @@
                     </div>
                 </div>
 
-                <button class="btn-primary" style="width:100%; margin-top: 1.5rem;">
-                    Tenho Interesse
+                <button 
+                    [class.btn-primary]="!estaFavoritado(eventoSelecionado.id)"
+                    [class.btn-secondary]="estaFavoritado(eventoSelecionado.id)"
+                    (click)="toggleInteresse(eventoSelecionado)" 
+                    style="width:100%; margin-top: 1.5rem;">
+                    {{ estaFavoritado(eventoSelecionado.id) ? 'Remover Interesse' : 'Tenho Interesse' }}
                 </button>
             </div>
         </div>
+    }
+
+    @if (toastMessage) {
+        <div class="toast">{{ toastMessage }}</div>
     }
 </section>

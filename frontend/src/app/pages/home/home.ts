@@ -1,58 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { EventoService } from '../../services/evento.service';
+import { AgendaService } from '../../services/agenda.service';
 
-export interface Evento {
+export interface EventoUI {
   id: number;
   nome: string;
   categoria: string;
   data: string;
   local: string;
-  //interessados: number;
   gratuito: boolean;
   preco?: number;
-  //distancia: string;
+  descricao?: string;
+  linkExterno?: string;
 }
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, RouterLink],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
+export class Home implements OnInit {
+  private readonly eventoService = inject(EventoService);
+  private readonly agendaService = inject(AgendaService);
 
-export class Home {
-  scrollParaEventos(): void {
-    document.getElementById('section-eventos')?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-    });
-  }
-
-  eventos: Evento[] = [
-    {
-      id: 1,
-      nome: 'Sarau da Boa Vista',
-      categoria: 'Música',
-      data: 'Hoje · 19h',
-      local: 'Praça Maciel Pinheiro',
-      //interessados: 142,
-      gratuito: true,
-      //emoji: '🎵',
-      //distancia: '1,2 km'
-    },
-
-    {
-      id: 2,
-      nome: 'Teatro do Barroco',
-      categoria: 'Teatro',
-      data: '04 Jul · 20h',
-      local: 'Teatro do Parque',
-      //interessados: 89,
-      gratuito: false,
-      preco: 25,
-      //emoji: '🎭',
-      //distancia: '2,4 km'
-    }
-  ];
+  readonly usuarioId = 1; // ID do usuário simulado para a agenda
+  
+  eventos: EventoUI[] = [];
+  favoritosIds: Set<number> = new Set<number>();
+  eventoSelecionado: EventoUI | null = null;
+  toastMessage = '';
 
   filtros = [
     'Todos',
@@ -65,7 +45,69 @@ export class Home {
   ];
 
   filtroAtivo = 'Todos';
-  eventosFiltrados = [...this.eventos];
+  eventosFiltrados: EventoUI[] = [];
+
+  ngOnInit(): void {
+    this.carregarDados();
+  }
+
+  carregarDados(): void {
+    // 1. Carrega favoritos do usuário
+    this.agendaService.listarFavoritosUsuario(this.usuarioId).subscribe({
+      next: (favoritos) => {
+        this.favoritosIds = new Set(favoritos.map(f => f.id));
+        // 2. Carrega eventos
+        this.carregarEventos();
+      },
+      error: () => {
+        // Se falhar ao listar favoritos (ex: banco zerado), carrega eventos normalmente
+        this.carregarEventos();
+      }
+    });
+  }
+
+  carregarEventos(): void {
+    this.eventoService.listarTodos().subscribe({
+      next: (apiEventos) => {
+        this.eventos = apiEventos.map(e => ({
+          id: e.id,
+          nome: e.nome,
+          categoria: e.categorias && e.categorias.length > 0 ? e.categorias[0] : 'Arte',
+          data: this.formatDataHora(e.dataHora),
+          local: e.bairro ? e.bairro : (e.endereco ? e.endereco : 'Recife'),
+          gratuito: e.preco == null || e.preco <= 0,
+          preco: e.preco,
+          descricao: e.descricao,
+          linkExterno: e.linkExterno
+        }));
+        this.filtrarEventos(this.filtroAtivo);
+      },
+      error: (err) => {
+        console.error('Erro ao carregar eventos do backend:', err);
+      }
+    });
+  }
+
+  formatDataHora(dataHoraStr: string): string {
+    try {
+      const date = new Date(dataHoraStr);
+      const dia = String(date.getDate()).padStart(2, '0');
+      const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+      const mes = meses[date.getMonth()];
+      const horas = String(date.getHours()).padStart(2, '0');
+      return `${dia} ${mes} · ${horas}h`;
+    } catch (e) {
+      return dataHoraStr;
+    }
+  }
+
+  scrollParaEventos(): void {
+    document.getElementById('section-eventos')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  }
+
   filtrarEventos(filtro: string) {
     this.filtroAtivo = filtro;
     if (filtro === 'Todos') {
@@ -81,13 +123,11 @@ export class Home {
     }
 
     this.eventosFiltrados = this.eventos.filter(
-      evento => evento.categoria === filtro
+      evento => evento.categoria.toLowerCase() === filtro.toLowerCase()
     );
   }
 
-  eventoSelecionado: Evento | null = null;
-
-  abrirModal(evento: Evento): void {
+  abrirModal(evento: EventoUI): void {
       this.eventoSelecionado = evento;
       document.body.style.overflow = 'hidden'; // trava o scroll
   }
@@ -96,4 +136,36 @@ export class Home {
       this.eventoSelecionado = null;
       document.body.style.overflow = '';
   }
+
+  estaFavoritado(eventoId: number): boolean {
+    return this.favoritosIds.has(eventoId);
+  }
+
+  toggleInteresse(evento: EventoUI): void {
+    if (this.estaFavoritado(evento.id)) {
+      // Desfavoritar
+      this.agendaService.desfavoritar(this.usuarioId, evento.id).subscribe({
+        next: () => {
+          this.favoritosIds.delete(evento.id);
+          this.showToast('Removido do seu planejamento');
+        },
+        error: () => this.showToast('Erro ao remover da agenda')
+      });
+    } else {
+      // Favoritar
+      this.agendaService.favoritar(this.usuarioId, evento.id).subscribe({
+        next: () => {
+          this.favoritosIds.add(evento.id);
+          this.showToast('Adicionado ao seu planejamento!');
+        },
+        error: () => this.showToast('Erro ao adicionar na agenda')
+      });
+    }
+  }
+
+  showToast(message: string) {
+    this.toastMessage = message;
+    setTimeout(() => this.toastMessage = '', 3000);
+  }
 }
+

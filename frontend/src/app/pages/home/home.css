@@ -371,3 +371,45 @@
             letter-spacing: 0.08em;
             opacity: 0.5;
         }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--white, #fff);
+            padding: 14px 32px;
+            border: 1.5px solid rgba(245, 243, 238, 0.3);
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all .2s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(232, 67, 26, 0.1);
+            border-color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent, #e8431a);
+            color: var(--white, #fff);
+            padding: 14px 32px;
+            border-radius: 50px;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+            z-index: 2000;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            animation: toastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            font-size: 14px;
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes toastIn {
+            from { bottom: 20px; opacity: 0; }
+            to { bottom: 40px; opacity: 1; }
+        }
