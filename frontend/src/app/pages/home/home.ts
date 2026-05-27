@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
 
 export interface Evento {
   id: number;
@@ -15,7 +14,7 @@ export interface Evento {
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink],
+  imports: [],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
@@ -84,5 +83,17 @@ export class Home {
     this.eventosFiltrados = this.eventos.filter(
       evento => evento.categoria === filtro
     );
+  }
+
+  eventoSelecionado: Evento | null = null;
+
+  abrirModal(evento: Evento): void {
+      this.eventoSelecionado = evento;
+      document.body.style.overflow = 'hidden'; // trava o scroll
+  }
+
+  fecharModal(): void {
+      this.eventoSelecionado = null;
+      document.body.style.overflow = '';
   }
 }

@@ -20,30 +20,38 @@
         <div class="block-title">MEUS INTERESSES</div>
         <p class="block-desc">Selecione os temas que você deseja ver com mais frequência.</p>
         <div class="interests-wrap">
-          <button class="interest-tag" *ngFor="let tag of interestTags"
-                  [class.active]="tag.active"
-                  (click)="toggleInterest(tag)">{{ tag.label }}</button>
+          @for (tag of interestTags; track tag.label) {
+            <button class="interest-tag"
+                    [class.active]="tag.active"
+                    (click)="toggleInterest(tag)">{{ tag.label }}</button>
+          }
         </div>
       </div>
 
       <div class="profile-block">
         <div class="block-title">CONFIGURAÇÕES E PRIVACIDADE</div>
-        <div class="setting-row" *ngFor="let s of settings">
-          <div class="setting-info">
-            <strong>{{ s.title }}</strong>
-            <p>{{ s.desc }}</p>
+        @for (s of settings; track s.title) {
+          <div class="setting-row">
+            <div class="setting-info">
+              <strong>{{ s.title }}</strong>
+              <p>{{ s.desc }}</p>
+            </div>
+            <label class="switch">
+              <input type="checkbox" [(ngModel)]="s.on">
+              <span class="slider"></span>
+            </label>
           </div>
-          <label class="switch">
-            <input type="checkbox" [(ngModel)]="s.on">
-            <span class="slider"></span>
-          </label>
-        </div>
+        }
       </div>
 
       <div class="profile-actions">
-        <button class="btn-save-profile" (click)="svc.showToast('✓ Perfil salvo com sucesso!')">Salvar Alterações</button>
-        <button class="btn-danger" (click)="svc.showToast('Conta excluída (simulado)')">Excluir minha conta</button>
+        <button class="btn-save-profile" (click)="showToast('✓ Perfil salvo com sucesso!')">Salvar Alterações</button>
+        <button class="btn-danger" (click)="showToast('Conta excluída (simulado)')">Excluir minha conta</button>
       </div>
+
+      @if (toastMessage) {
+        <div class="toast">{{ toastMessage }}</div>
+      }
     </div>
 
   </div>

@@ -1,17 +1,14 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { BoraliService } from '../../services/borali.service';
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './perfil.component.html',
+  templateUrl: './perfil.html',
 })
-export class PerfilComponent {
-  svc = inject(BoraliService);
-
+export class Perfil {
   interestTags = [
     { label: '🎵 Música',        active: true  },
     { label: '🎭 Teatro',        active: true  },
@@ -30,8 +27,15 @@ export class PerfilComponent {
     { title: 'Mostrar apenas eventos gratuitos', desc: 'Filtrar automaticamente os eventos sem custo.',  on: false },
   ];
 
+  toastMessage = '';
+
   toggleInterest(tag: { label: string; active: boolean }) {
     tag.active = !tag.active;
-    this.svc.showToast(tag.active ? 'Interesse adicionado!' : 'Interesse removido');
+    this.showToast(tag.active ? 'Interesse adicionado!' : 'Interesse removido');
+  }
+
+  showToast(message: string) {
+    this.toastMessage = message;
+    setTimeout(() => this.toastMessage = '', 3000);
   }
 }
