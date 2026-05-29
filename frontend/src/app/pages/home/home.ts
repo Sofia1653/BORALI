@@ -21,8 +21,9 @@ export interface EventoUI {
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './home.html',
-  styleUrl: './home.css',
+  styleUrls: ['./home.css'],
 })
+
 export class Home implements OnInit {
   private readonly eventoService = inject(EventoService);
   private readonly agendaService = inject(AgendaService);

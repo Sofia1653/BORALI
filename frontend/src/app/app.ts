@@ -7,8 +7,9 @@ import { Navbar } from './components/navbar/navbar';
   selector: 'app-root',
   imports: [RouterOutlet, Navbar, Footer],
   templateUrl: './app.html',
-  styleUrl: './app.css',
+  styleUrls: ['./app.css'],
 })
+
 export class App {
   protected readonly title = signal('BORALI');
 
@@ -21,8 +22,8 @@ export class App {
         const ring = document.getElementById('cursorRing');
         if (!cursor || !ring) return;
 
-        let ringX = 0;
-        let ringY = 0;
+        let ringX = window.innerWidth / 2;
+        let ringY = window.innerHeight / 2;
 
         const onMove = (e: MouseEvent) => {
           cursor.style.left = `${e.clientX}px`;

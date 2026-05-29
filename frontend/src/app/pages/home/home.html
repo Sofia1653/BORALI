@@ -50,39 +50,85 @@
     </div>
 
     <!-- Modal -->
-    @if (eventoSelecionado) {
-        <div class="modal-overlay" (click)="fecharModal()">
-            <div class="modal" (click)="$event.stopPropagation()">
-                <button class="modal-close" (click)="fecharModal()">✕</button>
+    <div *ngIf="eventoSelecionado" class="modal-overlay" (click)="fecharModal()">
 
-                <span class="card-category">{{ eventoSelecionado.categoria }}</span>
-                <h2 class="modal-title">{{ eventoSelecionado.nome }}</h2>
+        <div class="event-modal" (click)="$event.stopPropagation()">
 
-                <div class="modal-info">
-                    <div class="modal-info-item">
-                        <span class="modal-label">📅 Data</span>
-                        <span>{{ eventoSelecionado.data }}</span>
-                    </div>
-                    <div class="modal-info-item">
-                        <span class="modal-label">📍 Local</span>
-                        <span>{{ eventoSelecionado.local }}</span>
-                    </div>
-                    <div class="modal-info-item">
-                        <span class="modal-label">🎟️ Entrada</span>
-                        <span>{{ eventoSelecionado.gratuito ? 'Gratuito' : 'R$ ' + eventoSelecionado.preco }}</span>
-                    </div>
+            <button class="modal-close" (click)="fecharModal()">
+                ✕
+            </button>
+
+            <span class="modal-category">
+                {{ eventoSelecionado.categoria }}
+            </span>
+
+            <h2 class="modal-title">
+                {{ eventoSelecionado.nome }}
+            </h2>
+
+            <div class="modal-info">
+
+                <div class="modal-item">
+                    <span class="modal-label">📅 Data</span>
+                    <span>{{ eventoSelecionado.data }}</span>
                 </div>
 
-                <button 
-                    [class.btn-primary]="!estaFavoritado(eventoSelecionado.id)"
-                    [class.btn-secondary]="estaFavoritado(eventoSelecionado.id)"
-                    (click)="toggleInteresse(eventoSelecionado)" 
-                    style="width:100%; margin-top: 1.5rem;">
-                    {{ estaFavoritado(eventoSelecionado.id) ? 'Remover Interesse' : 'Tenho Interesse' }}
-                </button>
+                <div class="modal-item">
+                    <span class="modal-label">📍 Local</span>
+                    <span>{{ eventoSelecionado.local }}</span>
+                </div>
+
+                <div class="modal-item">
+                    <span class="modal-label">🎟️ Entrada</span>
+
+                    <span>
+                        {{ eventoSelecionado.gratuito
+                        ? 'Gratuito'
+                        : 'R$ ' + eventoSelecionado.preco }}
+                    </span>
+                </div>
+
+                <div
+                    class="modal-item"
+                    *ngIf="eventoSelecionado.descricao">
+
+                    <span class="modal-label">📝 Descrição</span>
+
+                    <p class="modal-description">
+                        {{ eventoSelecionado.descricao }}
+                    </p>
+                </div>
+
+                <div
+                    class="modal-item"
+                    *ngIf="eventoSelecionado.linkExterno">
+
+                    <span class="modal-label">🔗 Link do Evento</span>
+
+                    <a
+                        class="modal-link"
+                        [href]="eventoSelecionado.linkExterno"
+                        target="_blank">
+
+                        Abrir página do evento
+                    </a>
+                </div>
+
             </div>
+
+            <button
+                class="modal-btn"
+                (click)="toggleInteresse(eventoSelecionado)">
+
+                {{ estaFavoritado(eventoSelecionado.id)
+                ? 'Remover Interesse'
+                : 'Tenho Interesse' }}
+
+            </button>
+
         </div>
-    }
+
+    </div>
 
     @if (toastMessage) {
         <div class="toast">{{ toastMessage }}</div>
