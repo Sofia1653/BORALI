@@ -20,7 +20,9 @@ export interface AgendaItem {
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './agenda.html',
+  styleUrls: ['./agenda.css'],
 })
+
 export class Agenda implements OnInit {
   private readonly agendaService = inject(AgendaService);
 
@@ -110,4 +112,4 @@ export class Agenda implements OnInit {
     this.toastMessage = message;
     setTimeout(() => this.toastMessage = '', 3000);
   }
-}
+}
