@@ -35,23 +35,102 @@
     </div>
 
     <div class="events-grid">
-        @for (evento of eventosFiltrados; track evento.id){
-            <div class="event-card">
+        @for (evento of eventosFiltrados; track evento.id) {
+            <div class="event-card" (click)="abrirModal(evento)">
                 <div class="card-body">
-                    <span class="card-category">
-                    {{ evento.categoria }}
-                    </span>
-
-                    <h3 class="card-name">
-                    {{ evento.nome }}
-                    </h3>
-
+                    <span class="card-category">{{ evento.categoria }}</span>
+                    <h3 class="card-name">{{ evento.nome }}</h3>
                     <div class="card-info">
-                    <span>📅 {{ evento.data }}</span>
-                    <span>📍 {{ evento.local }}</span>
+                        <span>📅 {{ evento.data }}</span>
+                        <span>📍 {{ evento.local }}</span>
                     </div>
                 </div>
             </div>
         }
     </div>
+
+    <!-- Modal -->
+    <div *ngIf="eventoSelecionado" class="modal-overlay" (click)="fecharModal()">
+
+        <div class="event-modal" (click)="$event.stopPropagation()">
+
+            <button class="modal-close" (click)="fecharModal()">
+                ✕
+            </button>
+
+            <span class="modal-category">
+                {{ eventoSelecionado.categoria }}
+            </span>
+
+            <h2 class="modal-title">
+                {{ eventoSelecionado.nome }}
+            </h2>
+
+            <div class="modal-info">
+
+                <div class="modal-item">
+                    <span class="modal-label">📅 Data</span>
+                    <span>{{ eventoSelecionado.data }}</span>
+                </div>
+
+                <div class="modal-item">
+                    <span class="modal-label">📍 Local</span>
+                    <span>{{ eventoSelecionado.local }}</span>
+                </div>
+
+                <div class="modal-item">
+                    <span class="modal-label">🎟️ Entrada</span>
+
+                    <span>
+                        {{ eventoSelecionado.gratuito
+                        ? 'Gratuito'
+                        : 'R$ ' + eventoSelecionado.preco }}
+                    </span>
+                </div>
+
+                <div
+                    class="modal-item"
+                    *ngIf="eventoSelecionado.descricao">
+
+                    <span class="modal-label">📝 Descrição</span>
+
+                    <p class="modal-description">
+                        {{ eventoSelecionado.descricao }}
+                    </p>
+                </div>
+
+                <div
+                    class="modal-item"
+                    *ngIf="eventoSelecionado.linkExterno">
+
+                    <span class="modal-label">🔗 Link do Evento</span>
+
+                    <a
+                        class="modal-link"
+                        [href]="eventoSelecionado.linkExterno"
+                        target="_blank">
+
+                        Abrir página do evento
+                    </a>
+                </div>
+
+            </div>
+
+            <button
+                class="modal-btn"
+                (click)="$event.stopPropagation(); toggleInteresse(eventoSelecionado)">
+
+                {{ estaFavoritado(eventoSelecionado.id)
+                ? 'Remover Interesse'
+                : 'Tenho Interesse' }}
+
+            </button>
+
+        </div>
+
+    </div>
+
+    @if (toastMessage) {
+        <div class="toast">{{ toastMessage }}</div>
+    }
 </section>

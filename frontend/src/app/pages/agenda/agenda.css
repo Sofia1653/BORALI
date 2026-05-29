@@ -1,0 +1,142 @@
+        .agenda-page {
+            background: var(--black);
+            min-height: 100vh;
+            padding: 100px 60px 80px;
+        }
+
+        .agenda-header { margin-bottom: 50px; }
+
+        .agenda-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(60px, 7vw, 90px);
+            line-height: 1;
+        }
+
+        .agenda-title em {
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        .agenda-subtitle { color: var(--muted); margin-top: 10px; font-size: 15px; }
+
+        .month-divider {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 18px;
+            letter-spacing: 2.5px;
+            color: var(--gold);
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-dark);
+            margin-bottom: 20px;
+            margin-top: 40px;
+        }
+
+        .agenda-list { max-width: 860px; }
+
+        .agenda-item {
+            display: flex;
+            align-items: center;
+            background: var(--card-gray);
+            padding: 22px 24px;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-dark);
+            transition: .3s ease;
+            cursor: pointer;
+        }
+
+        .agenda-item:hover { transform: translateX(8px); border-color: var(--accent); }
+
+        .agenda-date {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-right: 24px;
+            border-right: 1px solid var(--border-dark);
+            min-width: 75px;
+        }
+
+        .agenda-date .day {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 34px;
+            color: var(--white);
+            line-height: 1;
+        }
+
+        .agenda-date .weekday {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 1px;
+        }
+
+        .agenda-info { padding-left: 24px; flex: 1; }
+
+        .agenda-tag {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 1.5px;
+        }
+
+        .agenda-info h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 22px;
+            margin: 4px 0 4px;
+            letter-spacing: .5px;
+        }
+
+        .agenda-info p { font-size: 13px; color: var(--muted); }
+
+        .status-badge {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 4px;
+            background: rgba(255,255,255,.05);
+            color: var(--muted);
+            letter-spacing: .5px;
+        }
+
+        .status-badge.confirmed {
+            background: rgba(0,186,113,.1);
+            color: #00BA71;
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: var(--muted);
+            font-size: 16px;
+            cursor: pointer;
+            padding: 8px;
+            margin-left: 12px;
+            transition: .2s;
+        }
+
+        .remove-btn:hover { color: var(--accent); }
+
+        .agenda-add-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 36px;
+            border: 2px dashed var(--border-dark);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: .3s;
+            color: var(--muted);
+            margin-top: 8px;
+            gap: 8px;
+        }
+
+        .agenda-add-card:hover {
+            border-color: var(--accent);
+            color: var(--white);
+            background: rgba(232,67,26,.03);
+        }
+
+        .add-icon { font-size: 28px; }

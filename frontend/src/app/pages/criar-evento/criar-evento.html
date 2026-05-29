@@ -1,1 +1,153 @@
-<p>criar-evento works!</p>
+<div class="criar-evento-page">
+  <div class="header-section">
+    <span class="section-eyebrow">Novo Evento</span>
+    <h1 class="page-title">CRIAR <em>EVENTO</em></h1>
+    <p class="page-subtitle">Divulgue cultura local e conecte-se com as pessoas de Recife.</p>
+  </div>
+
+  <div class="form-container">
+    <form (ngSubmit)="submeterForm()" #eventoForm="ngForm" class="glass-card">
+      <div class="form-grid">
+        
+        <!-- Nome do Evento -->
+        <div class="form-group full-width">
+          <label for="nome" class="form-label">Nome do Evento <span class="required">*</span></label>
+          <input 
+            type="text" 
+            id="nome" 
+            name="nome" 
+            [(ngModel)]="evento.nome" 
+            required 
+            placeholder="Ex: Festival de Jazz do Recife"
+            class="form-input">
+        </div>
+
+        <!-- Descrição -->
+        <div class="form-group full-width">
+          <label for="descricao" class="form-label">Descrição Detalhada</label>
+          <textarea 
+            id="descricao" 
+            name="descricao" 
+            [(ngModel)]="evento.descricao" 
+            rows="4"
+            placeholder="Conte mais sobre as atrações, o que as pessoas vão encontrar..."
+            class="form-input textarea-input"></textarea>
+        </div>
+
+        <!-- Data/Hora -->
+        <div class="form-group">
+          <label for="dataHora" class="form-label">Data e Horário <span class="required">*</span></label>
+          <input 
+            type="datetime-local" 
+            id="dataHora" 
+            name="dataHora" 
+            [(ngModel)]="evento.dataHora" 
+            required
+            class="form-input">
+        </div>
+
+        <!-- Preço -->
+        <div class="form-group">
+          <label for="preco" class="form-label">Preço da Entrada (R$)</label>
+          <input 
+            type="number" 
+            id="preco" 
+            name="preco" 
+            [(ngModel)]="evento.preco" 
+            min="0"
+            step="0.01"
+            placeholder="Deixe em branco ou digite 0 para Gratuito"
+            class="form-input">
+        </div>
+
+        <!-- Endereço -->
+        <div class="form-group">
+          <label for="endereco" class="form-label">Endereço <span class="required">*</span></label>
+          <input 
+            type="text" 
+            id="endereco" 
+            name="endereco" 
+            [(ngModel)]="evento.endereco" 
+            required
+            placeholder="Ex: Rua do Bom Jesus, 123"
+            class="form-input">
+        </div>
+
+        <!-- Bairro -->
+        <div class="form-group">
+          <label for="bairro" class="form-label">Bairro</label>
+          <input 
+            type="text" 
+            id="bairro" 
+            name="bairro" 
+            [(ngModel)]="evento.bairro" 
+            placeholder="Ex: Recife Antigo"
+            class="form-input">
+        </div>
+
+        <!-- Link Externo -->
+        <div class="form-group full-width">
+          <label for="linkExterno" class="form-label">Link de Inscrição / Redes Sociais</label>
+          <input 
+            type="url" 
+            id="linkExterno" 
+            name="linkExterno" 
+            [(ngModel)]="evento.linkExterno" 
+            placeholder="Ex: https://www.sympla.com.br/evento"
+            class="form-input">
+        </div>
+
+        <!-- Seleção de Categorias -->
+        <div class="form-group full-width">
+          <label class="form-label">Categorias <span class="required">*</span> <span class="label-help">(Selecione as que se aplicam)</span></label>
+          <div class="category-pills">
+            @for (cat of categorias; track cat.id) {
+              <button 
+                type="button" 
+                class="category-pill" 
+                [class.selected]="isCategoriaSelected(cat.id)"
+                (click)="toggleCategoria(cat.id)">
+                {{ cat.nome }}
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Localização Geográfica Automática -->
+        <div class="form-group half-width">
+          <label for="latitude" class="form-label">Latitude</label>
+          <input 
+            type="number" 
+            id="latitude" 
+            name="latitude" 
+            [(ngModel)]="evento.latitude" 
+            step="0.0001"
+            class="form-input coord-input">
+        </div>
+
+        <div class="form-group half-width">
+          <label for="longitude" class="form-label">Longitude</label>
+          <input 
+            type="number" 
+            id="longitude" 
+            name="longitude" 
+            [(ngModel)]="evento.longitude" 
+            step="0.0001"
+            class="form-input coord-input">
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" routerLink="/">Cancelar</button>
+        <button type="submit" class="btn-submit" [disabled]="isSubmitting || !eventoForm.valid">
+          {{ isSubmitting ? 'Criando evento...' : 'Publicar Evento' }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  @if (toastMessage) {
+    <div class="toast-message">{{ toastMessage }}</div>
+  }
+</div>
