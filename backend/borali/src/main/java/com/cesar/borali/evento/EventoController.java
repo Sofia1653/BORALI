@@ -4,10 +4,12 @@ import com.cesar.borali.evento.dto.EventoRequest;
 import com.cesar.borali.evento.dto.EventoResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -34,8 +36,14 @@ public class EventoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<EventoResponse>> listarTodos() {
-        List<EventoResponse> eventos = eventoService.listarTodos();
+    public ResponseEntity<List<EventoResponse>> listarTodos(
+            @RequestParam(required = false) String palavraChave,
+            @RequestParam(required = false) Long categoriaId,
+            @RequestParam(required = false) String categoriaNome,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataInicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFim) {
+        List<EventoResponse> eventos = eventoService.buscarComFiltros(
+                palavraChave, categoriaId, categoriaNome, dataInicio, dataFim);
         return ResponseEntity.ok(eventos);
     }
 
