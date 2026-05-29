@@ -118,7 +118,7 @@
 
             <button
                 class="modal-btn"
-                (click)="toggleInteresse(eventoSelecionado)">
+                (click)="$event.stopPropagation(); toggleInteresse(eventoSelecionado)">
 
                 {{ estaFavoritado(eventoSelecionado.id)
                 ? 'Remover Interesse'

@@ -380,6 +380,10 @@
             text-decoration: underline;
         }
 
+        .modal-btn:active {
+            transform: scale(.98);
+        }
+
         /* FECHAR */
 
         .modal-close {

@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { EventoService } from '../../services/evento.service';
 import { AgendaService } from '../../services/agenda.service';
 
@@ -27,6 +27,7 @@ export interface EventoUI {
 export class Home implements OnInit {
   private readonly eventoService = inject(EventoService);
   private readonly agendaService = inject(AgendaService);
+  private readonly router = inject(Router);
 
   readonly usuarioId = 1; // ID do usuário simulado para a agenda
   
@@ -143,24 +144,47 @@ export class Home implements OnInit {
   }
 
   toggleInteresse(evento: EventoUI): void {
+
     if (this.estaFavoritado(evento.id)) {
-      // Desfavoritar
+
       this.agendaService.desfavoritar(this.usuarioId, evento.id).subscribe({
+
         next: () => {
           this.favoritosIds.delete(evento.id);
+
           this.showToast('Removido do seu planejamento');
         },
-        error: () => this.showToast('Erro ao remover da agenda')
+
+        error: () => {
+          this.showToast('Erro ao remover da agenda');
+        }
+
       });
+
     } else {
-      // Favoritar
+
       this.agendaService.favoritar(this.usuarioId, evento.id).subscribe({
+
         next: () => {
+
           this.favoritosIds.add(evento.id);
+
           this.showToast('Adicionado ao seu planejamento!');
+
+          this.fecharModal();
+
+          setTimeout(() => {
+            this.router.navigate(['/agenda']);
+          }, 800);
+
         },
-        error: () => this.showToast('Erro ao adicionar na agenda')
+
+        error: () => {
+          this.showToast('Erro ao adicionar na agenda');
+        }
+
       });
+
     }
   }
 
