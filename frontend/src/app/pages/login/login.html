@@ -1,1 +1,146 @@
-<p>login works!</p>
+<div class="login-container">
+  <div class="glass-card">
+    <div class="card-header">
+      <h2 class="app-logo">BOR<span>ALI</span></h2>
+      <p class="subtitle">{{ isLoginMode ? 'Conecte-se e descubra novos eventos!' : 'Crie sua conta para começar a explorar!' }}</p>
+    </div>
+
+    <!-- Toggle Tabs -->
+    <div class="toggle-tabs">
+      <button 
+        type="button" 
+        [class.active]="isLoginMode" 
+        (click)="toggleMode()"
+        [disabled]="loading"
+      >
+        Entrar
+      </button>
+      <button 
+        type="button" 
+        [class.active]="!isLoginMode" 
+        (click)="toggleMode()"
+        [disabled]="loading"
+      >
+        Cadastrar-se
+      </button>
+    </div>
+
+    <!-- Alert Messages -->
+    @if (errorMessage) {
+      <div class="alert alert-error">
+        <span class="icon">⚠️</span>
+        <span class="message">{{ errorMessage }}</span>
+      </div>
+    }
+    @if (successMessage) {
+      <div class="alert alert-success">
+        <span class="icon">✅</span>
+        <span class="message">{{ successMessage }}</span>
+      </div>
+    }
+
+    <!-- LOGIN FORM -->
+    @if (isLoginMode) {
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmitLogin()" class="auth-form">
+        <div class="form-group">
+          <label for="login-email">E-mail</label>
+          <input 
+            type="email" 
+            id="login-email" 
+            formControlName="email" 
+            placeholder="seu.email@exemplo.com"
+            [class.invalid]="loginForm.get('email')?.touched && loginForm.get('email')?.invalid"
+          />
+          @if (loginForm.get('email')?.touched && loginForm.get('email')?.invalid) {
+            <span class="error-text">Digite um e-mail válido.</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="login-senha">Senha</label>
+          <input 
+            type="password" 
+            id="login-senha" 
+            formControlName="senha" 
+            placeholder="Sua senha"
+            [class.invalid]="loginForm.get('senha')?.touched && loginForm.get('senha')?.invalid"
+          />
+          @if (loginForm.get('senha')?.touched && loginForm.get('senha')?.invalid) {
+            <span class="error-text">A senha é obrigatória (mínimo de 4 caracteres).</span>
+          }
+        </div>
+
+        <button type="submit" class="submit-btn" [disabled]="loading || loginForm.invalid">
+          @if (loading) {
+            <span class="spinner"></span>
+            Aguarde...
+          } @else {
+            Entrar
+          }
+        </button>
+      </form>
+    } @else {
+      <!-- REGISTER FORM -->
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmitRegister()" class="auth-form">
+        <div class="form-group">
+          <label for="reg-nome">Nome Completo</label>
+          <input 
+            type="text" 
+            id="reg-nome" 
+            formControlName="nome" 
+            placeholder="Seu nome completo"
+            [class.invalid]="registerForm.get('nome')?.touched && registerForm.get('nome')?.invalid"
+          />
+          @if (registerForm.get('nome')?.touched && registerForm.get('nome')?.invalid) {
+            <span class="error-text">O nome completo é obrigatório (mínimo de 3 caracteres).</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="reg-email">E-mail</label>
+          <input 
+            type="email" 
+            id="reg-email" 
+            formControlName="email" 
+            placeholder="seu.email@exemplo.com"
+            [class.invalid]="registerForm.get('email')?.touched && registerForm.get('email')?.invalid"
+          />
+          @if (registerForm.get('email')?.touched && registerForm.get('email')?.invalid) {
+            <span class="error-text">Digite um e-mail válido.</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="reg-senha">Senha</label>
+          <input 
+            type="password" 
+            id="reg-senha" 
+            formControlName="senha" 
+            placeholder="Mínimo 6 caracteres"
+            [class.invalid]="registerForm.get('senha')?.touched && registerForm.get('senha')?.invalid"
+          />
+          @if (registerForm.get('senha')?.touched && registerForm.get('senha')?.invalid) {
+            <span class="error-text">A senha deve ter no mínimo 6 caracteres.</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="reg-tipo">Tipo de Conta</label>
+          <select id="reg-tipo" formControlName="tipo">
+            <option value="COMUM">Usuário Comum (explorar eventos)</option>
+            <option value="ORGANIZADOR">Organizador (criar e gerenciar eventos)</option>
+          </select>
+        </div>
+
+        <button type="submit" class="submit-btn" [disabled]="loading || registerForm.invalid">
+          @if (loading) {
+            <span class="spinner"></span>
+            Aguarde...
+          } @else {
+            Criar Conta e Entrar
+          }
+        </button>
+      </form>
+    }
+  </div>
+</div>
