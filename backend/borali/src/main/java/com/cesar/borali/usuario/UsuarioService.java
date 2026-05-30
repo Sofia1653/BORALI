@@ -3,6 +3,7 @@ package com.cesar.borali.usuario;
 import com.cesar.borali.categoria.Categoria;
 import com.cesar.borali.categoria.CategoriaService;
 import com.cesar.borali.usuario.domain.Usuario;
+import com.cesar.borali.usuario.dto.LoginRequest;
 import com.cesar.borali.usuario.dto.UsuarioRequest;
 import com.cesar.borali.usuario.dto.UsuarioResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,5 +86,17 @@ public class UsuarioService {
             usuario.getInteresses().add(categoria);
             usuarioRepository.save(usuario);
         }
+    }
+
+    @Transactional(readOnly = true)
+    public UsuarioResponse login(LoginRequest request) {
+        Usuario usuario = usuarioRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("Email ou senha incorretos."));
+
+        if (!usuario.getSenha().equals(request.getSenha())) {
+            throw new IllegalArgumentException("Email ou senha incorretos.");
+        }
+
+        return UsuarioResponse.de(usuario);
     }
 }

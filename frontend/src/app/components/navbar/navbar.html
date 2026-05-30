@@ -12,10 +12,20 @@
         </li>
         <li><a routerLink="/mapa" routerLinkActive="active" id="nav-mapa">Mapa</a></li>
         <li><a routerLink="/agenda" routerLinkActive="active" id="nav-agenda">Agenda</a></li>
-        <li><a routerLink="/dashboard" routerLinkActive="active" id="nav-dash">Dashboard</a></li>
-        <li><a routerLink="/perfil" routerLinkActive="active" id="nav-perfil">Perfil</a></li>
-        <li>
-            <a routerLink="/criar-evento" routerLinkActive="active" class="nav-cta" id="nav-criar">+ Criar Evento</a>
-        </li>
+        
+        @if (authService.currentUser()) {
+            <li><a routerLink="/dashboard" routerLinkActive="active" id="nav-dash">Dashboard</a></li>
+            <li><a routerLink="/perfil" routerLinkActive="active" id="nav-perfil">Perfil</a></li>
+            @if (authService.currentUser()?.tipo === 'ORGANIZADOR') {
+                <li>
+                    <a routerLink="/criar-evento" routerLinkActive="active" class="nav-cta" id="nav-criar">+ Criar Evento</a>
+                </li>
+            }
+            <li><a (click)="logout()" class="nav-logout" id="nav-logout" style="cursor: pointer;">Sair</a></li>
+        } @else {
+            <li>
+                <a routerLink="/login" routerLinkActive="active" class="nav-cta" id="nav-login">Entrar</a>
+            </li>
+        }
     </ul>
 </nav>

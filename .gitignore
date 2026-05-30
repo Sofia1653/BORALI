@@ -1,0 +1,36 @@
+# IDEs and Editors
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Dependencies and caches
+node_modules/
+.npm-cache/
+frontend/.npm-cache/
+frontend/.angular/cache/
+.angular/cache/
+
+# Build and Temp files
+dist/
+tmp/
+temp/
+out/
+target/
+bin/
+
+# Database files, logs, and dumps
+*.db
+*.sqlite
+*.sql
+pgdata/
+postgres-data/
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db

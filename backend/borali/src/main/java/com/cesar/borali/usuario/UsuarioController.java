@@ -1,5 +1,6 @@
 package com.cesar.borali.usuario;
 
+import com.cesar.borali.usuario.dto.LoginRequest;
 import com.cesar.borali.usuario.dto.UsuarioRequest;
 import com.cesar.borali.usuario.dto.UsuarioResponse;
 import jakarta.validation.Valid;
@@ -55,5 +56,11 @@ public class UsuarioController {
     public ResponseEntity<Void> adicionarInteresse(@PathVariable Long id, @PathVariable Long categoriaId) {
         usuarioService.adicionarInteresse(id, categoriaId);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UsuarioResponse> login(@Valid @RequestBody LoginRequest request) {
+        UsuarioResponse response = usuarioService.login(request);
+        return ResponseEntity.ok(response);
     }
 }
