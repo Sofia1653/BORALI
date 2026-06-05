@@ -71,23 +71,74 @@ export class Home implements OnInit {
   carregarEventos(): void {
     this.eventoService.listarTodos().subscribe({
       next: (apiEventos) => {
-        this.eventos = apiEventos.map(e => ({
-          id: e.id,
-          nome: e.nome,
-          categoria: e.categorias && e.categorias.length > 0 ? e.categorias[0] : 'Arte',
-          data: this.formatDataHora(e.dataHora),
-          local: e.bairro ? e.bairro : (e.endereco ? e.endereco : 'Recife'),
-          gratuito: e.preco == null || e.preco <= 0,
-          preco: e.preco,
-          descricao: e.descricao,
-          linkExterno: e.linkExterno
-        }));
+        if (apiEventos && apiEventos.length > 0) {
+          this.eventos = apiEventos.map(e => ({
+            id: e.id,
+            nome: e.nome,
+            categoria: e.categorias && e.categorias.length > 0 ? e.categorias[0] : 'Arte',
+            data: this.formatDataHora(e.dataHora),
+            local: e.bairro ? e.bairro : (e.endereco ? e.endereco : 'Recife'),
+            gratuito: e.preco == null || e.preco <= 0,
+            preco: e.preco,
+            descricao: e.descricao,
+            linkExterno: e.linkExterno
+          }));
+        } else {
+          this.usarEventosFallback();
+        }
         this.filtrarEventos(this.filtroAtivo);
       },
       error: (err) => {
-        console.error('Erro ao carregar eventos do backend:', err);
+        console.warn('Erro ao carregar eventos do backend. Usando fallback local.', err);
+        this.usarEventosFallback();
+        this.filtrarEventos(this.filtroAtivo);
       }
     });
+  }
+
+  usarEventosFallback(): void {
+    this.eventos = [
+      {
+        id: 1,
+        nome: "Festival de Jazz do Recife",
+        categoria: "Música",
+        data: "12 Jun · 18h",
+        local: "Recife Antigo",
+        gratuito: true,
+        preco: 0,
+        descricao: "Um festival incrível com grandes nomes da música instrumental e do jazz, aberto ao público no coração do Recife Antigo."
+      },
+      {
+        id: 2,
+        nome: "Teatro Infantil no Parque",
+        categoria: "Teatro",
+        data: "09 Jun · 16h",
+        local: "Jaqueira",
+        gratuito: true,
+        preco: 0,
+        descricao: "Uma tarde mágica de contação de histórias e teatro de fantoches para as crianças no Parque da Jaqueira."
+      },
+      {
+        id: 3,
+        nome: "Mostra de Cinema Francês",
+        categoria: "Cinema",
+        data: "10 Jun · 19h",
+        local: "Derby",
+        gratuito: false,
+        preco: 10,
+        descricao: "Exibição especial de clássicos do cinema francês contemporâneo com debates pós-sessão."
+      },
+      {
+        id: 4,
+        nome: "Concerto Sinfônico",
+        categoria: "Música",
+        data: "17 Jun · 20h",
+        local: "Santo Antônio",
+        gratuito: true,
+        preco: 0,
+        descricao: "Apresentação da Orquestra Sinfônica do Recife executando a Nona Sinfonia de Beethoven no histórico Teatro de Santa Isabel."
+      }
+    ];
   }
 
   formatDataHora(dataHoraStr: string): string {
