@@ -34,6 +34,7 @@ export interface UsuarioResponse {
   nome: string;
   email: string;
   tipo: 'CIDADAO' | 'ORGANIZADOR' | 'GESTOR_PUBLICO';
+  interesses?: CategoriaResponse[];
 }
 
 export interface CategoriaResponse {

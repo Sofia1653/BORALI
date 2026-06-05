@@ -86,4 +86,14 @@ public class UsuarioService {
             usuarioRepository.save(usuario);
         }
     }
+
+    public void removerInteresse(Long usuarioId, Long categoriaId) {
+        Usuario usuario = buscarPorId(usuarioId);
+        Categoria categoria = categoriaService.buscarPorId(categoriaId);
+
+        if (usuario.getInteresses().contains(categoria)) {
+            usuario.getInteresses().remove(categoria);
+            usuarioRepository.save(usuario);
+        }
+    }
 }

@@ -56,4 +56,10 @@ public class UsuarioController {
         usuarioService.adicionarInteresse(id, categoriaId);
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/{id}/interesses/{categoriaId}")
+    public ResponseEntity<Void> removerInteresse(@PathVariable Long id, @PathVariable Long categoriaId) {
+        usuarioService.removerInteresse(id, categoriaId);
+        return ResponseEntity.ok().build();
+    }
 }
