@@ -1,8 +1,10 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { EventoService } from '../../services/evento.service';
 import { UsuarioService } from '../../services/usuario.service';
+import { AuthService } from '../../services/auth.service';
 
 export interface InterestTagUI {
   id?: number;
@@ -32,8 +34,16 @@ const CATEGORY_EMOJIS: Record<string, string> = {
 export class Perfil implements OnInit {
   private readonly eventoService = inject(EventoService);
   private readonly usuarioService = inject(UsuarioService);
+  protected readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
-  readonly usuarioId = 1; // ID do usuário simulado (Sofia)
+  get usuarioId(): number {
+    return this.authService.currentUser()?.id ?? 0;
+  }
+
+  get currentUser() {
+    return this.authService.currentUser();
+  }
   
   // Lista inicial com fallbacks locais de emojis caso a API falhe ou retorne vazia
   interestTags: InterestTagUI[] = [
@@ -136,5 +146,10 @@ export class Perfil implements OnInit {
   showToast(message: string) {
     this.toastMessage = message;
     setTimeout(() => this.toastMessage = '', 3000);
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/']);
   }
 }

@@ -3,11 +3,11 @@
 
     <div class="profile-sidebar">
       <div class="profile-avatar-wrap">
-        S
+        {{ currentUser?.nome?.charAt(0) || 'U' }}
         <button class="edit-avatar-btn">✎</button>
       </div>
-      <div class="profile-name-big">Sofia</div>
-      <p class="profile-location-txt">Recife, PE · Membro desde 2026</p>
+      <div class="profile-name-big">{{ currentUser?.nome }}</div>
+      <p class="profile-location-txt">Recife, PE · {{ currentUser?.tipo }}</p>
       <div class="profile-stats-mini">
         <div class="p-stat"><strong>12</strong>Salvos</div>
         <div class="p-stat"><strong>34</strong>Vistos</div>
@@ -46,7 +46,7 @@
 
       <div class="profile-actions">
         <button class="btn-save-profile" (click)="showToast('✓ Perfil salvo com sucesso!')">Salvar Alterações</button>
-        <button class="btn-danger" (click)="showToast('Conta excluída (simulado)')">Excluir minha conta</button>
+        <button class="btn-danger" (click)="logout()">Sair da Conta</button>
       </div>
 
       @if (toastMessage) {

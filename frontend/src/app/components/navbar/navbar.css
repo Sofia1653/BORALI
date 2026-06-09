@@ -68,3 +68,23 @@ nav {
 }
 
 .nav-cta:hover { background: var(--accent-light) !important; }
+
+.nav-links a.locked {
+    color: rgba(245,243,238,.35) !important;
+}
+
+.nav-links a.locked:hover {
+    color: rgba(245,243,238,.6) !important;
+}
+
+.nav-login-btn {
+    border: 1px solid rgba(245,243,238,.3) !important;
+}
+
+.nav-logout-btn {
+    color: var(--muted) !important;
+}
+
+.nav-logout-btn:hover {
+    color: var(--accent) !important;
+}

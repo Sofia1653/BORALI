@@ -1,1 +1,74 @@
-<p>login works!</p>
+<div class="login-page">
+  <div class="login-noise"></div>
+  <div class="login-gradient"></div>
+  
+  <div class="login-card">
+    <div class="logo-wrap">
+      <a routerLink="/" class="card-logo">BOR<span>ALI</span></a>
+    </div>
+
+    <!-- Mode switch tabs -->
+    <div class="tab-header">
+      <button [class.active]="!isRegisterMode" (click)="toggleMode(false)">Entrar</button>
+      <button [class.active]="isRegisterMode" (click)="toggleMode(true)">Cadastrar</button>
+    </div>
+
+    <!-- Notifications -->
+    <div class="alert error" *ngIf="errorMessage">
+      <span>⚠️ {{ errorMessage }}</span>
+    </div>
+    <div class="alert success" *ngIf="successMessage">
+      <span>✓ {{ successMessage }}</span>
+    </div>
+
+    <form (submit)="onSubmit()" class="login-form">
+      <!-- Nome (Cadastro Only) -->
+      <div class="form-group" *ngIf="isRegisterMode">
+        <label for="nome">Nome Completo</label>
+        <div class="input-wrapper">
+          <input type="text" id="nome" name="nome" [(ngModel)]="nome" placeholder="Seu nome" required autocomplete="off">
+        </div>
+      </div>
+
+      <!-- E-mail -->
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <div class="input-wrapper">
+          <input type="email" id="email" name="email" [(ngModel)]="email" placeholder="seu@email.com" required autocomplete="off">
+        </div>
+      </div>
+
+      <!-- Senha -->
+      <div class="form-group">
+        <label for="senha">Senha</label>
+        <div class="input-wrapper">
+          <input type="password" id="senha" name="senha" [(ngModel)]="senha" placeholder="Sua senha" required>
+        </div>
+      </div>
+
+      <!-- Confirmar Senha (Cadastro Only) -->
+      <div class="form-group" *ngIf="isRegisterMode">
+        <label for="confirmarSenha">Confirmar Senha</label>
+        <div class="input-wrapper">
+          <input type="password" id="confirmarSenha" name="confirmarSenha" [(ngModel)]="confirmarSenha" placeholder="Repita a senha" required>
+        </div>
+      </div>
+
+      <!-- Perfil / Tipo de Conta (Cadastro Only) -->
+      <div class="form-group" *ngIf="isRegisterMode">
+        <label for="tipo">Tipo de Perfil</label>
+        <div class="select-wrapper">
+          <select id="tipo" name="tipo" [(ngModel)]="tipo">
+            <option value="CIDADAO">Cidadão (Explorar, favoritar, mapa)</option>
+            <option value="ORGANIZADOR">Organizador (Criar eventos, ver dashboard)</option>
+            <option value="GESTOR_PUBLICO">Gestor Público (Acesso completo e administrativo)</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit">
+        {{ isRegisterMode ? 'Criar Conta' : 'Entrar' }}
+      </button>
+    </form>
+  </div>
+</div>

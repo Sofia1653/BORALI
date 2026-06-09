@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { EventoService } from '../../services/evento.service';
 import { AgendaService } from '../../services/agenda.service';
+import { AuthService } from '../../services/auth.service';
 
 export interface EventoUI {
   id: number;
@@ -28,8 +29,11 @@ export class Home implements OnInit {
   private readonly eventoService = inject(EventoService);
   private readonly agendaService = inject(AgendaService);
   private readonly router = inject(Router);
+  protected readonly authService = inject(AuthService);
 
-  readonly usuarioId = 1; // ID do usuário simulado para a agenda
+  get usuarioId(): number | undefined {
+    return this.authService.currentUser()?.id;
+  }
   
   eventos: EventoUI[] = [];
   favoritosIds: Set<number> = new Set<number>();
@@ -54,18 +58,24 @@ export class Home implements OnInit {
   }
 
   carregarDados(): void {
-    // 1. Carrega favoritos do usuário
-    this.agendaService.listarFavoritosUsuario(this.usuarioId).subscribe({
-      next: (favoritos) => {
-        this.favoritosIds = new Set(favoritos.map(f => f.id));
-        // 2. Carrega eventos
-        this.carregarEventos();
-      },
-      error: () => {
-        // Se falhar ao listar favoritos (ex: banco zerado), carrega eventos normalmente
-        this.carregarEventos();
-      }
-    });
+    const id = this.usuarioId;
+    if (id) {
+      // 1. Carrega favoritos do usuário
+      this.agendaService.listarFavoritosUsuario(id).subscribe({
+        next: (favoritos) => {
+          this.favoritosIds = new Set(favoritos.map(f => f.id));
+          // 2. Carrega eventos
+          this.carregarEventos();
+        },
+        error: () => {
+          // Se falhar ao listar favoritos (ex: banco zerado), carrega eventos normalmente
+          this.carregarEventos();
+        }
+      });
+    } else {
+      this.favoritosIds = new Set<number>();
+      this.carregarEventos();
+    }
   }
 
   carregarEventos(): void {
@@ -195,10 +205,17 @@ export class Home implements OnInit {
   }
 
   toggleInteresse(evento: EventoUI): void {
+    const id = this.usuarioId;
+    if (!id) {
+      this.fecharModal();
+      alert('Você precisa fazer login para planejar seus eventos.');
+      this.router.navigate(['/login']);
+      return;
+    }
 
     if (this.estaFavoritado(evento.id)) {
 
-      this.agendaService.desfavoritar(this.usuarioId, evento.id).subscribe({
+      this.agendaService.desfavoritar(id, evento.id).subscribe({
 
         next: () => {
           this.favoritosIds.delete(evento.id);
@@ -214,7 +231,7 @@ export class Home implements OnInit {
 
     } else {
 
-      this.agendaService.favoritar(this.usuarioId, evento.id).subscribe({
+      this.agendaService.favoritar(id, evento.id).subscribe({
 
         next: () => {
 
