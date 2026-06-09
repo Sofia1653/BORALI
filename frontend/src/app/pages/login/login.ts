@@ -1,91 +1,99 @@
-import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, ReactiveFormsModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
-export class Login {
-  private readonly fb = inject(FormBuilder);
+export class Login implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
-  isLoginMode = true;
-  loading = false;
+  isRegisterMode = false;
+  
+  // Form fields
+  nome = '';
+  email = '';
+  senha = '';
+  confirmarSenha = '';
+  tipo: 'CIDADAO' | 'ORGANIZADOR' | 'GESTOR_PUBLICO' = 'CIDADAO';
+
   errorMessage = '';
   successMessage = '';
 
-  readonly loginForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    senha: ['', [Validators.required, Validators.minLength(4)]],
-  });
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      const mode = params['mode'];
+      if (mode === 'cadastro' || mode === 'register') {
+        this.isRegisterMode = true;
+      } else {
+        this.isRegisterMode = false;
+      }
 
-  readonly registerForm: FormGroup = this.fb.group({
-    nome: ['', [Validators.required, Validators.minLength(3)]],
-    email: ['', [Validators.required, Validators.email]],
-    senha: ['', [Validators.required, Validators.minLength(6)]],
-    tipo: ['COMUM', [Validators.required]],
-  });
+      const role = params['role'];
+      if (role === 'ORGANIZADOR' || role === 'GESTOR_PUBLICO' || role === 'CIDADAO') {
+        this.tipo = role;
+      }
+    });
+  }
 
-  toggleMode(): void {
-    this.isLoginMode = !this.isLoginMode;
+  toggleMode(register: boolean) {
+    this.isRegisterMode = register;
     this.errorMessage = '';
     this.successMessage = '';
-    if (this.isLoginMode) {
-      this.loginForm.reset();
+  }
+
+  onSubmit() {
+    this.errorMessage = '';
+    this.successMessage = '';
+
+    if (this.isRegisterMode) {
+      if (!this.nome || !this.email || !this.senha || !this.tipo) {
+        this.errorMessage = 'Por favor, preencha todos os campos obrigatórios.';
+        return;
+      }
+      if (this.senha !== this.confirmarSenha) {
+        this.errorMessage = 'As senhas informadas não coincidem.';
+        return;
+      }
+
+      this.authService.register(this.nome, this.email, this.senha, this.tipo).subscribe({
+        next: (user) => {
+          this.successMessage = 'Conta criada com sucesso!';
+          setTimeout(() => {
+            this.router.navigate(['/']);
+          }, 1500);
+        },
+        error: (err) => {
+          console.error(err);
+          this.errorMessage = err?.error?.message || 'Erro ao criar conta. Tente outro e-mail.';
+        }
+      });
     } else {
-      this.registerForm.reset({ tipo: 'COMUM' });
+      if (!this.email || !this.senha) {
+        this.errorMessage = 'Por favor, preencha o e-mail e a senha.';
+        return;
+      }
+
+      this.authService.login(this.email, this.senha).subscribe({
+        next: (user) => {
+          this.successMessage = 'Acesso liberado!';
+          setTimeout(() => {
+            this.router.navigate(['/']);
+          }, 1000);
+        },
+        error: (err) => {
+          console.error(err);
+          this.errorMessage = err?.error?.message || 'E-mail ou senha incorretos.';
+        }
+      });
     }
-  }
-
-  onSubmitLogin(): void {
-    if (this.loginForm.invalid) {
-      this.loginForm.markAllAsTouched();
-      return;
-    }
-
-    this.loading = true;
-    this.errorMessage = '';
-    const { email, senha } = this.loginForm.value;
-
-    this.authService.login(email, senha).subscribe({
-      next: () => {
-        this.loading = false;
-        this.successMessage = 'Login realizado com sucesso! Redirecionando...';
-        setTimeout(() => this.router.navigate(['/']), 1200);
-      },
-      error: (err) => {
-        this.loading = false;
-        this.errorMessage = err.error?.message || 'Email ou senha inválidos. Tente novamente.';
-      },
-    });
-  }
-
-  onSubmitRegister(): void {
-    if (this.registerForm.invalid) {
-      this.registerForm.markAllAsTouched();
-      return;
-    }
-
-    this.loading = true;
-    this.errorMessage = '';
-    const { nome, email, senha, tipo } = this.registerForm.value;
-
-    this.authService.register(nome, email, senha, tipo).subscribe({
-      next: () => {
-        this.loading = false;
-        this.successMessage = 'Cadastro realizado com sucesso! Redirecionando...';
-        setTimeout(() => this.router.navigate(['/']), 1200);
-      },
-      error: (err) => {
-        this.loading = false;
-        this.errorMessage = err.error?.message || 'Erro ao realizar cadastro. Tente novamente.';
-      },
-    });
   }
 }

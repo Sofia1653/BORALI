@@ -10,22 +10,79 @@
                 id="nav-home"
                 >Eventos</a>
         </li>
-        <li><a routerLink="/mapa" routerLinkActive="active" id="nav-mapa">Mapa</a></li>
-        <li><a routerLink="/agenda" routerLinkActive="active" id="nav-agenda">Agenda</a></li>
         
-        @if (authService.currentUser()) {
-            <li><a routerLink="/dashboard" routerLinkActive="active" id="nav-dash">Dashboard</a></li>
-            <li><a routerLink="/perfil" routerLinkActive="active" id="nav-perfil">Perfil</a></li>
-            @if (authService.currentUser()?.tipo === 'ORGANIZADOR') {
-                <li>
-                    <a routerLink="/criar-evento" routerLinkActive="active" class="nav-cta" id="nav-criar">+ Criar Evento</a>
-                </li>
-            }
-            <li><a (click)="logout()" class="nav-logout" id="nav-logout" style="cursor: pointer;">Sair</a></li>
-        } @else {
-            <li>
-                <a routerLink="/login" routerLinkActive="active" class="nav-cta" id="nav-login">Entrar</a>
-            </li>
-        }
+        <!-- Mapa (Unlocked for anyone logged in) -->
+        <li>
+            <a 
+                [routerLink]="isLoggedIn() ? '/mapa' : null" 
+                (click)="!isLoggedIn() && showLockAlert($event)"
+                routerLinkActive="active" 
+                [class.locked]="!isLoggedIn()"
+                id="nav-mapa">
+                Mapa<span *ngIf="!isLoggedIn()"> 🔒</span>
+            </a>
+        </li>
+        
+        <!-- Agenda (Unlocked for anyone logged in) -->
+        <li>
+            <a 
+                [routerLink]="isLoggedIn() ? '/agenda' : null" 
+                (click)="!isLoggedIn() && showLockAlert($event)"
+                routerLinkActive="active" 
+                [class.locked]="!isLoggedIn()"
+                id="nav-agenda">
+                Agenda<span *ngIf="!isLoggedIn()"> 🔒</span>
+            </a>
+        </li>
+        
+        <!-- Dashboard (Only for ORGANIZADOR/GESTOR_PUBLICO) -->
+        <li *ngIf="isLoggedIn() && isOrganizerOrManager()">
+            <a routerLink="/dashboard" routerLinkActive="active" id="nav-dash">Dashboard</a>
+        </li>
+        <li *ngIf="!isLoggedIn() || !isOrganizerOrManager()">
+            <a 
+                [routerLink]="null" 
+                (click)="showLockAlert($event, 'organizador')"
+                [class.locked]="true"
+                id="nav-dash-locked">
+                Dashboard 🔒
+            </a>
+        </li>
+        
+        <!-- Perfil (Unlocked for anyone logged in) -->
+        <li *ngIf="isLoggedIn()">
+            <a routerLink="/perfil" routerLinkActive="active" id="nav-perfil">Perfil</a>
+        </li>
+        <li *ngIf="!isLoggedIn()">
+            <a 
+                [routerLink]="null" 
+                (click)="showLockAlert($event)"
+                [class.locked]="true"
+                id="nav-perfil-locked">
+                Perfil 🔒
+            </a>
+        </li>
+        
+        <!-- Criar Evento (Only for ORGANIZADOR/GESTOR_PUBLICO) -->
+        <li *ngIf="isLoggedIn() && isOrganizerOrManager()">
+            <a routerLink="/criar-evento" routerLinkActive="active" class="nav-cta" id="nav-criar">+ Criar Evento</a>
+        </li>
+        <li *ngIf="!isLoggedIn() || !isOrganizerOrManager()">
+            <a 
+                [routerLink]="null" 
+                (click)="showLockAlert($event, 'organizador')"
+                class="nav-cta locked" 
+                id="nav-criar-locked">
+                + Criar Evento 🔒
+            </a>
+        </li>
+
+        <!-- Login / Logout buttons -->
+        <li *ngIf="!isLoggedIn()">
+            <a routerLink="/login" routerLinkActive="active" class="nav-login-btn" id="nav-login">Entrar</a>
+        </li>
+        <li *ngIf="isLoggedIn()">
+            <a (click)="logout()" class="nav-logout-btn" id="nav-logout">Sair</a>
+        </li>
     </ul>
 </nav>

@@ -28,6 +28,12 @@ public class UsuarioController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<UsuarioResponse> login(@Valid @RequestBody LoginRequest request) {
+        UsuarioResponse response = usuarioService.login(request);
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioResponse> buscarPorId(@PathVariable Long id) {
         UsuarioResponse response = usuarioService.buscarDTOPorId(id);
@@ -58,9 +64,9 @@ public class UsuarioController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<UsuarioResponse> login(@Valid @RequestBody LoginRequest request) {
-        UsuarioResponse response = usuarioService.login(request);
-        return ResponseEntity.ok(response);
+    @DeleteMapping("/{id}/interesses/{categoriaId}")
+    public ResponseEntity<Void> removerInteresse(@PathVariable Long id, @PathVariable Long categoriaId) {
+        usuarioService.removerInteresse(id, categoriaId);
+        return ResponseEntity.ok().build();
     }
 }

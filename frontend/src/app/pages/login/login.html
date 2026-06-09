@@ -1,146 +1,74 @@
-<div class="login-container">
-  <div class="glass-card">
-    <div class="card-header">
-      <h2 class="app-logo">BOR<span>ALI</span></h2>
-      <p class="subtitle">{{ isLoginMode ? 'Conecte-se e descubra novos eventos!' : 'Crie sua conta para começar a explorar!' }}</p>
+<div class="login-page">
+  <div class="login-noise"></div>
+  <div class="login-gradient"></div>
+  
+  <div class="login-card">
+    <div class="logo-wrap">
+      <a routerLink="/" class="card-logo">BOR<span>ALI</span></a>
     </div>
 
-    <!-- Toggle Tabs -->
-    <div class="toggle-tabs">
-      <button 
-        type="button" 
-        [class.active]="isLoginMode" 
-        (click)="toggleMode()"
-        [disabled]="loading"
-      >
-        Entrar
-      </button>
-      <button 
-        type="button" 
-        [class.active]="!isLoginMode" 
-        (click)="toggleMode()"
-        [disabled]="loading"
-      >
-        Cadastrar-se
-      </button>
+    <!-- Mode switch tabs -->
+    <div class="tab-header">
+      <button [class.active]="!isRegisterMode" (click)="toggleMode(false)">Entrar</button>
+      <button [class.active]="isRegisterMode" (click)="toggleMode(true)">Cadastrar</button>
     </div>
 
-    <!-- Alert Messages -->
-    @if (errorMessage) {
-      <div class="alert alert-error">
-        <span class="icon">⚠️</span>
-        <span class="message">{{ errorMessage }}</span>
+    <!-- Notifications -->
+    <div class="alert error" *ngIf="errorMessage">
+      <span>⚠️ {{ errorMessage }}</span>
+    </div>
+    <div class="alert success" *ngIf="successMessage">
+      <span>✓ {{ successMessage }}</span>
+    </div>
+
+    <form (submit)="onSubmit()" class="login-form">
+      <!-- Nome (Cadastro Only) -->
+      <div class="form-group" *ngIf="isRegisterMode">
+        <label for="nome">Nome Completo</label>
+        <div class="input-wrapper">
+          <input type="text" id="nome" name="nome" [(ngModel)]="nome" placeholder="Seu nome" required autocomplete="off">
+        </div>
       </div>
-    }
-    @if (successMessage) {
-      <div class="alert alert-success">
-        <span class="icon">✅</span>
-        <span class="message">{{ successMessage }}</span>
+
+      <!-- E-mail -->
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <div class="input-wrapper">
+          <input type="email" id="email" name="email" [(ngModel)]="email" placeholder="seu@email.com" required autocomplete="off">
+        </div>
       </div>
-    }
 
-    <!-- LOGIN FORM -->
-    @if (isLoginMode) {
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmitLogin()" class="auth-form">
-        <div class="form-group">
-          <label for="login-email">E-mail</label>
-          <input 
-            type="email" 
-            id="login-email" 
-            formControlName="email" 
-            placeholder="seu.email@exemplo.com"
-            [class.invalid]="loginForm.get('email')?.touched && loginForm.get('email')?.invalid"
-          />
-          @if (loginForm.get('email')?.touched && loginForm.get('email')?.invalid) {
-            <span class="error-text">Digite um e-mail válido.</span>
-          }
+      <!-- Senha -->
+      <div class="form-group">
+        <label for="senha">Senha</label>
+        <div class="input-wrapper">
+          <input type="password" id="senha" name="senha" [(ngModel)]="senha" placeholder="Sua senha" required>
         </div>
+      </div>
 
-        <div class="form-group">
-          <label for="login-senha">Senha</label>
-          <input 
-            type="password" 
-            id="login-senha" 
-            formControlName="senha" 
-            placeholder="Sua senha"
-            [class.invalid]="loginForm.get('senha')?.touched && loginForm.get('senha')?.invalid"
-          />
-          @if (loginForm.get('senha')?.touched && loginForm.get('senha')?.invalid) {
-            <span class="error-text">A senha é obrigatória (mínimo de 4 caracteres).</span>
-          }
+      <!-- Confirmar Senha (Cadastro Only) -->
+      <div class="form-group" *ngIf="isRegisterMode">
+        <label for="confirmarSenha">Confirmar Senha</label>
+        <div class="input-wrapper">
+          <input type="password" id="confirmarSenha" name="confirmarSenha" [(ngModel)]="confirmarSenha" placeholder="Repita a senha" required>
         </div>
+      </div>
 
-        <button type="submit" class="submit-btn" [disabled]="loading || loginForm.invalid">
-          @if (loading) {
-            <span class="spinner"></span>
-            Aguarde...
-          } @else {
-            Entrar
-          }
-        </button>
-      </form>
-    } @else {
-      <!-- REGISTER FORM -->
-      <form [formGroup]="registerForm" (ngSubmit)="onSubmitRegister()" class="auth-form">
-        <div class="form-group">
-          <label for="reg-nome">Nome Completo</label>
-          <input 
-            type="text" 
-            id="reg-nome" 
-            formControlName="nome" 
-            placeholder="Seu nome completo"
-            [class.invalid]="registerForm.get('nome')?.touched && registerForm.get('nome')?.invalid"
-          />
-          @if (registerForm.get('nome')?.touched && registerForm.get('nome')?.invalid) {
-            <span class="error-text">O nome completo é obrigatório (mínimo de 3 caracteres).</span>
-          }
-        </div>
-
-        <div class="form-group">
-          <label for="reg-email">E-mail</label>
-          <input 
-            type="email" 
-            id="reg-email" 
-            formControlName="email" 
-            placeholder="seu.email@exemplo.com"
-            [class.invalid]="registerForm.get('email')?.touched && registerForm.get('email')?.invalid"
-          />
-          @if (registerForm.get('email')?.touched && registerForm.get('email')?.invalid) {
-            <span class="error-text">Digite um e-mail válido.</span>
-          }
-        </div>
-
-        <div class="form-group">
-          <label for="reg-senha">Senha</label>
-          <input 
-            type="password" 
-            id="reg-senha" 
-            formControlName="senha" 
-            placeholder="Mínimo 6 caracteres"
-            [class.invalid]="registerForm.get('senha')?.touched && registerForm.get('senha')?.invalid"
-          />
-          @if (registerForm.get('senha')?.touched && registerForm.get('senha')?.invalid) {
-            <span class="error-text">A senha deve ter no mínimo 6 caracteres.</span>
-          }
-        </div>
-
-        <div class="form-group">
-          <label for="reg-tipo">Tipo de Conta</label>
-          <select id="reg-tipo" formControlName="tipo">
-            <option value="COMUM">Usuário Comum (explorar eventos)</option>
-            <option value="ORGANIZADOR">Organizador (criar e gerenciar eventos)</option>
+      <!-- Perfil / Tipo de Conta (Cadastro Only) -->
+      <div class="form-group" *ngIf="isRegisterMode">
+        <label for="tipo">Tipo de Perfil</label>
+        <div class="select-wrapper">
+          <select id="tipo" name="tipo" [(ngModel)]="tipo">
+            <option value="CIDADAO">Cidadão (Explorar, favoritar, mapa)</option>
+            <option value="ORGANIZADOR">Organizador (Criar eventos, ver dashboard)</option>
+            <option value="GESTOR_PUBLICO">Gestor Público (Acesso completo e administrativo)</option>
           </select>
         </div>
+      </div>
 
-        <button type="submit" class="submit-btn" [disabled]="loading || registerForm.invalid">
-          @if (loading) {
-            <span class="spinner"></span>
-            Aguarde...
-          } @else {
-            Criar Conta e Entrar
-          }
-        </button>
-      </form>
-    }
+      <button type="submit" class="btn-submit">
+        {{ isRegisterMode ? 'Criar Conta' : 'Entrar' }}
+      </button>
+    </form>
   </div>
 </div>

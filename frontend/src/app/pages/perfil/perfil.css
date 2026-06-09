@@ -1,0 +1,186 @@
+.perfil-page {
+            background: var(--black);
+            min-height: 100vh;
+            padding: 100px 60px 80px;
+        }
+
+        .perfil-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 36px;
+            align-items: start;
+        }
+
+        /* Sidebar do perfil */
+        .profile-sidebar {
+            background: var(--card-gray);
+            padding: 36px;
+            border-radius: 24px;
+            text-align: center;
+            border: 1px solid var(--border-dark);
+            position: sticky;
+            top: 84px;
+        }
+
+        .profile-avatar-wrap {
+            width: 90px; height: 90px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: 800;
+            position: relative;
+        }
+
+        .edit-avatar-btn {
+            position: absolute;
+            bottom: 0; right: 0;
+            background: var(--white);
+            border: none;
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--black);
+        }
+
+        .profile-name-big {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 30px;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .profile-location-txt { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
+
+        .profile-stats-mini {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            border-top: 1px solid var(--border-dark);
+            padding-top: 20px;
+        }
+
+        .p-stat { font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: 1px; }
+        .p-stat strong { font-size: 22px; color: var(--white); display: block; font-family: 'Bebas Neue', sans-serif; margin-bottom: 2px; }
+
+        /* Blocos do perfil */
+        .profile-block {
+            background: var(--card-gray);
+            padding: 32px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-dark);
+        }
+
+        .block-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 22px;
+            letter-spacing: 1.5px;
+            margin-bottom: 6px;
+            color: var(--accent);
+        }
+
+        .block-desc { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+
+        /* Tags de interesse */
+        .interests-wrap { display: flex; flex-wrap: wrap; gap: 10px; }
+
+        .interest-tag {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,.1);
+            color: var(--white);
+            padding: 9px 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: inherit;
+            transition: .2s;
+        }
+
+        .interest-tag.active {
+            background: rgba(232,67,26,.12);
+            border-color: var(--accent);
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .interest-tag:hover { border-color: var(--accent); }
+
+        /* Toggles de configuração */
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        .setting-row:last-child { border-bottom: none; }
+        .setting-info strong { display: block; font-size: 14px; margin-bottom: 2px; }
+        .setting-info p { font-size: 12px; color: var(--muted); }
+
+        /* Custom Switch */
+        .switch { position: relative; display: inline-block; width: 46px; height: 24px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background-color: var(--surface2);
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px; width: 18px;
+            left: 3px; bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider { background-color: var(--accent); }
+        input:checked + .slider:before { transform: translateX(22px); }
+
+        /* Ações do perfil */
+        .profile-actions {
+            display: flex;
+            gap: 14px;
+            margin-top: 8px;
+        }
+
+        .btn-save-profile {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: .2s;
+        }
+
+        .btn-save-profile:hover { background: var(--accent-light); }
+
+        .btn-danger {
+            background: transparent;
+            border: none;
+            color: #ff4444;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            font-family: inherit;
+            padding: 14px;
+        }

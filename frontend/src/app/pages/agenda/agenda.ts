@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AgendaService } from '../../services/agenda.service';
+import { AuthService } from '../../services/auth.service';
 
 export interface AgendaItem {
   id: number;
@@ -25,8 +26,11 @@ export interface AgendaItem {
 
 export class Agenda implements OnInit {
   private readonly agendaService = inject(AgendaService);
+  private readonly authService = inject(AuthService);
 
-  readonly usuarioId = 1; // ID do usuário padrão
+  get usuarioId(): number {
+    return this.authService.currentUser()?.id ?? 0;
+  }
   items: AgendaItem[] = [];
   toastMessage = '';
 

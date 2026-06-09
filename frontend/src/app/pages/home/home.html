@@ -134,3 +134,18 @@
         <div class="toast">{{ toastMessage }}</div>
     }
 </section>
+
+@if (!authService.isLoggedIn()) {
+<section class="cta-section">
+    <div class="cta-bg-text">BORALI</div>
+    <div class="cta-content">
+        <span class="cta-eyebrow">Faça Parte</span>
+        <h2 class="cta-title">DESCUBRA<br>O RECIFE</h2>
+        <p class="cta-desc">Cadastre-se gratuitamente e receba recomendações personalizadas de eventos culturais perto de você.</p>
+        <div class="cta-actions">
+            <button class="btn-white-fill" [routerLink]="['/login']" [queryParams]="{ mode: 'cadastro', role: 'CIDADAO' }">Criar conta grátis</button>
+            <button class="btn-outline-white" [routerLink]="['/login']" [queryParams]="{ mode: 'cadastro', role: 'ORGANIZADOR' }">Sou organizador</button>
+        </div>
+    </div>
+</section>
+}

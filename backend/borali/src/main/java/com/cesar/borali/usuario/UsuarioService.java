@@ -35,8 +35,7 @@ public class UsuarioService {
                 request.getNome(),
                 request.getEmail(),
                 request.getSenha(),
-                request.getTipo()
-        );
+                request.getTipo());
 
         Usuario salvo = usuarioRepository.save(usuario);
         return UsuarioResponse.de(salvo);
@@ -88,13 +87,23 @@ public class UsuarioService {
         }
     }
 
+    public void removerInteresse(Long usuarioId, Long categoriaId) {
+        Usuario usuario = buscarPorId(usuarioId);
+        Categoria categoria = categoriaService.buscarPorId(categoriaId);
+
+        if (usuario.getInteresses().contains(categoria)) {
+            usuario.getInteresses().remove(categoria);
+            usuarioRepository.save(usuario);
+        }
+    }
+
     @Transactional(readOnly = true)
     public UsuarioResponse login(LoginRequest request) {
         Usuario usuario = usuarioRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("Email ou senha incorretos."));
+                .orElseThrow(() -> new IllegalArgumentException("E-mail ou senha incorretos."));
 
         if (!usuario.getSenha().equals(request.getSenha())) {
-            throw new IllegalArgumentException("Email ou senha incorretos.");
+            throw new IllegalArgumentException("E-mail ou senha incorretos.");
         }
 
         return UsuarioResponse.de(usuario);

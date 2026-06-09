@@ -1,0 +1,64 @@
+.map-container {
+  width: 100%;
+  height: calc(100vh - 64px);
+  position: relative;
+  overflow: hidden;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Custom styles for Leaflet popups to match Borali dark theme */
+.leaflet-popup-content-wrapper {
+  background: #141413 !important;
+  color: #F5F3EE !important;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: 'Instrument Sans', sans-serif;
+  padding: 6px;
+}
+
+.leaflet-popup-tip {
+  background: #141413 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.popup-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+  color: #E8431A;
+  margin-bottom: 6px;
+}
+
+.popup-info {
+  font-size: 12px;
+  color: #8A8880;
+  margin: 3px 0;
+}
+
+.popup-info strong {
+  color: #F5F3EE;
+}
+
+.btn-popup-route {
+  display: block;
+  width: 100%;
+  background: #E8431A;
+  color: white !important;
+  text-decoration: none;
+  text-align: center;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: 10px;
+  transition: 0.2s;
+}
+
+.btn-popup-route:hover {
+  background: #FF6B42;
+}
