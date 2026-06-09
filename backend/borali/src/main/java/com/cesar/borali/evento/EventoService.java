@@ -10,9 +10,11 @@ import com.cesar.borali.evento.dto.EventoResponse;
 import com.cesar.borali.usuario.UsuarioService;
 import com.cesar.borali.usuario.domain.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -91,6 +93,37 @@ public class EventoService {
     @Transactional(readOnly = true)
     public List<EventoResponse> listarTodos() {
         return eventoRepository.findAll().stream()
+                .map(EventoResponse::de)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<EventoResponse> buscarComFiltros(
+            String palavraChave,
+            Long categoriaId,
+            String categoriaNome,
+            LocalDateTime dataInicio,
+            LocalDateTime dataFim) {
+
+        Specification<Evento> spec = Specification.where(EventoSpecification.distinct());
+
+        if (palavraChave != null && !palavraChave.isBlank()) {
+            spec = spec.and(EventoSpecification.nomeOuDescricaoContem(palavraChave));
+        }
+
+        if (categoriaId != null) {
+            spec = spec.and(EventoSpecification.temCategoria(categoriaId));
+        }
+
+        if (categoriaNome != null && !categoriaNome.isBlank()) {
+            spec = spec.and(EventoSpecification.temCategoriaNome(categoriaNome));
+        }
+
+        if (dataInicio != null || dataFim != null) {
+            spec = spec.and(EventoSpecification.noIntervaloDeDatas(dataInicio, dataFim));
+        }
+
+        return eventoRepository.findAll(spec).stream()
                 .map(EventoResponse::de)
                 .collect(Collectors.toList());
     }
