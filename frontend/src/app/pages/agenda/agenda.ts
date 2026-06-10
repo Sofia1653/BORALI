@@ -31,31 +31,25 @@ export class Agenda implements OnInit {
   get usuarioId(): number {
     return this.authService.currentUser()?.id ?? 0;
   }
-  items: AgendaItem[] = [];
   toastMessage = '';
 
-  ngOnInit(): void {
-    this.carregarAgenda();
+  get items(): AgendaItem[] {
+    return this.agendaService.favoritos().map(e => ({
+      id: e.id,
+      name: e.nome,
+      month: this.formatarMes(e.dataHora),
+      day: this.formatarDia(e.dataHora),
+      weekday: this.formatarDiaSemana(e.dataHora),
+      date: e.dataHora,
+      location: e.bairro ? e.bairro : (e.endereco ? e.endereco : 'Recife'),
+      tag: e.categorias && e.categorias.length > 0 ? e.categorias[0] : 'Arte',
+      status: 'interest' as const
+    }));
   }
 
-  carregarAgenda(): void {
+  ngOnInit(): void {
     this.agendaService.listarFavoritosUsuario(this.usuarioId).subscribe({
-      next: (eventos) => {
-        this.items = eventos.map(e => ({
-          id: e.id,
-          name: e.nome,
-          month: this.formatarMes(e.dataHora),
-          day: this.formatarDia(e.dataHora),
-          weekday: this.formatarDiaSemana(e.dataHora),
-          date: e.dataHora,
-          location: e.bairro ? e.bairro : (e.endereco ? e.endereco : 'Recife'),
-          tag: e.categorias && e.categorias.length > 0 ? e.categorias[0] : 'Arte',
-          status: 'interest'
-        }));
-      },
-      error: (err) => {
-        console.error('Erro ao carregar favoritos:', err);
-      }
+      error: (err) => console.error('Erro ao carregar favoritos:', err)
     });
   }
 
@@ -102,13 +96,8 @@ export class Agenda implements OnInit {
   remove(e: MouseEvent, item: AgendaItem) {
     e.stopPropagation();
     this.agendaService.desfavoritar(this.usuarioId, item.id).subscribe({
-      next: () => {
-        this.items = this.items.filter(i => i.id !== item.id);
-        this.showToast('Evento removido da agenda');
-      },
-      error: () => {
-        this.showToast('Erro ao remover da agenda');
-      }
+      next: () => this.showToast('Evento removido da agenda'),
+      error: () => this.showToast('Erro ao remover da agenda')
     });
   }
 
