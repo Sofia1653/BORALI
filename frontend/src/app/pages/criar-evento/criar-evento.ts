@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -18,6 +18,7 @@ export class CriarEvento implements OnInit {
   private readonly eventoService = inject(EventoService);
   private readonly router = inject(Router);
   private readonly http = inject(HttpClient);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   readonly organizadorId = 1;
   categorias: CategoriaResponse[] = [];
@@ -54,9 +55,14 @@ export class CriarEvento implements OnInit {
     this.eventoService.listarCategorias().subscribe({
       next: (cats) => {
         this.categorias = cats;
+        this.cdr.markForCheck();
+        if (cats.length === 0) {
+          this.showToast('Nenhuma categoria disponível. Verifique o servidor.');
+        }
       },
       error: (err) => {
         console.error('Erro ao carregar categorias do backend:', err);
+        this.showToast('Não foi possível carregar as categorias. O servidor está no ar?');
       }
     });
   }
