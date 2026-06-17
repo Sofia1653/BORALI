@@ -1,1 +1,130 @@
-<p>dashboard works!</p>
+<div class="dashboard">
+
+  <!-- HEADER -->
+  <header class="dash-header">
+    <div class="header-inner">
+      <div>
+        <span class="eyebrow">BORALI ANALYTICS</span>
+        <h1 class="dash-title">Insights Culturais <em>em Recife</em></h1>
+        <p class="dash-sub">Pesquisa com moradores de Recife e região metropolitana · 2026</p>
+      </div>
+      @if (!isLoading) {
+        <div class="filter-wrap">
+          <span class="filter-label">FILTRAR POR FAIXA ETÁRIA</span>
+          <div class="filter-pills">
+            <button class="fpill" [class.active]="!selectedFaixa" (click)="setFaixa('')">Todos</button>
+            @for (f of faixas; track f) {
+              <button class="fpill" [class.active]="selectedFaixa === f" (click)="setFaixa(f)">{{ f }} anos</button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </header>
+
+  <!-- LOADING -->
+  @if (isLoading) {
+    <div class="loading">
+      <div class="spinner"></div>
+      <p>Carregando dados da pesquisa…</p>
+    </div>
+  }
+
+  @if (!isLoading) {
+
+    <!-- KPI BAR -->
+    <div class="kpi-bar">
+      <div class="kpi">
+        <span class="kv">{{ kpiTotal }}</span>
+        <span class="kl">Respondentes</span>
+      </div>
+      <div class="kpi">
+        <span class="kv">{{ kpiBairros }}</span>
+        <span class="kl">Bairros Mapeados</span>
+      </div>
+      <div class="kpi kpi-red">
+        <span class="kv">{{ kpiPerderamPct }}%</span>
+        <span class="kl">Perderam Evento por Falta de Informação</span>
+      </div>
+      <div class="kpi kpi-gold">
+        <span class="kv kv-sm">{{ kpiCanalPrincipal }}</span>
+        <span class="kl">Canal de Descoberta #1</span>
+      </div>
+      <div class="kpi kpi-teal">
+        <span class="kv">{{ kpiUsariaApp }}%</span>
+        <span class="kl">Usariam App com Geolocalização</span>
+      </div>
+    </div>
+
+    <!-- HEATMAP -->
+    <div class="block">
+      <div class="card">
+        <div class="card-head">
+          <span class="eyebrow">DISTRIBUIÇÃO GEOGRÁFICA</span>
+          <h2 class="ct">Mapa de <em>Calor</em> — Demanda por Bairro</h2>
+          <p class="cs">Cada ponto representa um bairro. A intensidade da cor indica maior concentração de respondentes que buscam eventos culturais. Clique para detalhes.</p>
+        </div>
+        <div id="heatmap" class="mapbox"></div>
+      </div>
+    </div>
+
+    <!-- EVENTOS + CANAIS -->
+    <div class="block">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head">
+            <span class="eyebrow">INTERESSES</span>
+            <h2 class="ct">Eventos <em>Mais Populares</em></h2>
+          </div>
+          <div class="chbox chbox-lg"><canvas id="tiposChart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="eyebrow">COMO DESCOBREM</span>
+            <h2 class="ct">Canais de <em>Descoberta</em></h2>
+          </div>
+          <div class="chbox chbox-lg"><canvas id="canaisChart"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FUNCIONALIDADES -->
+    <div class="block">
+      <div class="card">
+        <div class="card-head">
+          <span class="eyebrow">APP IDEAL</span>
+          <h2 class="ct">Funcionalidades <em>Mais Desejadas</em></h2>
+        </div>
+        <div class="chbox chbox-md"><canvas id="funcsChart"></canvas></div>
+      </div>
+    </div>
+
+    <!-- DONUTS + DIFICULDADE -->
+    <div class="block block-last">
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-head">
+            <span class="eyebrow">PERFIL</span>
+            <h2 class="ct">Faixa <em>Etária</em></h2>
+          </div>
+          <div class="chbox chbox-donut"><canvas id="ageChart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="eyebrow">ENGAJAMENTO</span>
+            <h2 class="ct">Frequência de <em>Participação</em></h2>
+          </div>
+          <div class="chbox chbox-donut"><canvas id="freqChart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="eyebrow">BARREIRAS</span>
+            <h2 class="ct">Dificuldade de <em>Descoberta</em></h2>
+          </div>
+          <div class="chbox chbox-donut"><canvas id="difficultyChart"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+  }
+</div>

@@ -1,0 +1,175 @@
+.dashboard {
+  min-height: 100vh;
+  background: var(--black);
+}
+
+/* ─── HEADER ─── */
+.dash-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border-dark);
+  padding: 52px 60px 40px;
+}
+.header-inner {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+.eyebrow {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.dash-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(36px, 5vw, 60px);
+  line-height: .95;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+.dash-title em { font-family: 'Instrument Serif', serif; font-style: italic; color: var(--gold); }
+.dash-sub { font-size: 13px; color: var(--muted); }
+
+/* ─── FILTERS ─── */
+.filter-wrap { flex-shrink: 0; }
+.filter-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.filter-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.fpill {
+  padding: 7px 16px;
+  border-radius: 50px;
+  border: 1px solid var(--border-dark);
+  background: transparent;
+  color: rgba(245,243,238,.5);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: .2s;
+  font-family: inherit;
+}
+.fpill:hover, .fpill.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* ─── KPI BAR ─── */
+.kpi-bar {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  background: var(--border-dark);
+  border-bottom: 1px solid var(--border-dark);
+}
+.kpi { background: var(--surface); padding: 28px 24px; display: flex; flex-direction: column; gap: 6px; }
+.kv {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(30px, 3.5vw, 48px);
+  line-height: 1;
+  color: var(--white);
+}
+.kv-sm {
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: clamp(14px, 1.4vw, 18px);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--gold);
+}
+.kl { font-size: 10px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; line-height: 1.5; }
+.kpi-red  .kv { color: var(--accent); }
+.kpi-gold .kv { color: var(--gold); }
+.kpi-teal .kv { color: #22d3ee; }
+
+/* ─── LAYOUT ─── */
+.block { padding: 24px 60px 0; }
+.block-last { padding-bottom: 80px; }
+.card { background: var(--surface2); border: 1px solid var(--border-dark); border-radius: 16px; overflow: hidden; }
+.card-head { padding: 24px 24px 0; }
+.ct {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(20px, 2.5vw, 30px);
+  line-height: 1;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+.ct em { font-family: 'Instrument Serif', serif; font-style: italic; color: var(--gold); }
+.cs { font-size: 12px; color: var(--muted); line-height: 1.6; padding-bottom: 4px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+/* ─── MAP ─── */
+.mapbox { height: 480px; width: 100%; }
+
+/* ─── CHART BOXES ─── */
+.chbox { padding: 16px 24px 24px; position: relative; }
+.chbox-lg    { height: 300px; }
+.chbox-md    { height: 210px; }
+.chbox-donut { height: 290px; }
+
+/* ─── LOADING ─── */
+.loading {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; height: 400px; gap: 20px;
+  color: var(--muted); font-size: 14px;
+}
+.spinner {
+  width: 36px; height: 36px;
+  border: 2px solid var(--border-dark);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─── LEAFLET DARK OVERRIDES ─── */
+:host ::ng-deep .heat-legend {
+  background: rgba(20,20,19,.92);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 12px;
+  color: rgba(245,243,238,.8);
+  min-width: 140px;
+  backdrop-filter: blur(6px);
+}
+:host ::ng-deep .lg-title { font-weight: 700; font-size: 10px; letter-spacing: 2px; color: var(--muted); margin-bottom: 8px; }
+:host ::ng-deep .lg-item { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+:host ::ng-deep .lg-item i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+:host ::ng-deep .leaflet-popup-content-wrapper {
+  background: #1E1E1C !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,.7) !important;
+  color: var(--white);
+}
+:host ::ng-deep .leaflet-popup-tip { background: #1E1E1C !important; }
+:host ::ng-deep .leaflet-popup-close-button { color: var(--muted) !important; font-size: 16px !important; }
+:host ::ng-deep .leaflet-popup-content { margin: 14px 18px !important; }
+:host ::ng-deep .pop strong { color: #F5F3EE; font-size: 14px; display: block; margin-bottom: 2px; }
+:host ::ng-deep .pop span   { color: #8A8880; font-size: 12px; }
+:host ::ng-deep .leaflet-control-attribution { background: rgba(10,10,9,.75) !important; color: var(--muted) !important; font-size: 10px !important; }
+:host ::ng-deep .leaflet-control-attribution a { color: var(--gold) !important; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1100px) {
+  .block { padding: 18px 28px 0; }
+  .dash-header { padding: 40px 28px 32px; }
+  .kpi-bar { grid-template-columns: repeat(3, 1fr); }
+  .grid-3 { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .dash-header { padding: 32px 20px 28px; }
+  .header-inner { flex-direction: column; align-items: flex-start; }
+  .block { padding: 14px 16px 0; }
+  .kpi-bar { grid-template-columns: repeat(2, 1fr); }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .mapbox { height: 360px; }
+}
