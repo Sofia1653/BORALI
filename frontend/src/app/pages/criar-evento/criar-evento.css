@@ -126,9 +126,76 @@
   line-height: 1.5;
 }
 
-.coord-input {
-  opacity: 0.8;
-  font-family: monospace;
+.geocoding-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.btn-geocode {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--white);
+  border: 1px solid var(--border-dark);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.btn-geocode:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-geocode:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.geocoding-status {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.4;
+  flex: 1;
+  min-width: 0;
+}
+
+.geocoding-success {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  color: #86efac;
+}
+
+.geocoding-error {
+  background: rgba(232, 67, 26, 0.1);
+  border: 1px solid rgba(232, 67, 26, 0.25);
+  color: #fca5a5;
+}
+
+.geocoding-icon {
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.geocoding-text {
+  word-break: break-word;
+}
+
+.geocoding-hint {
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
 }
 
 /* Category Pills Selector */
