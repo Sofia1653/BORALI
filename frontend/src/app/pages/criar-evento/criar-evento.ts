@@ -2,6 +2,8 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { timeout } from 'rxjs';
 import { EventoService } from '../../services/evento.service';
 import { CategoriaResponse, EventoRequest } from '../../models/models';
 
@@ -15,11 +17,14 @@ import { CategoriaResponse, EventoRequest } from '../../models/models';
 export class CriarEvento implements OnInit {
   private readonly eventoService = inject(EventoService);
   private readonly router = inject(Router);
+  private readonly http = inject(HttpClient);
 
-  readonly organizadorId = 1; // ID do organizador padrão (Sofia)
+  readonly organizadorId = 1;
   categorias: CategoriaResponse[] = [];
   toastMessage = '';
   isSubmitting = false;
+  geocodingStatus: 'idle' | 'loading' | 'success' | 'error' = 'idle';
+  enderecoResolvido = '';
 
   evento = {
     nome: '',
@@ -29,8 +34,8 @@ export class CriarEvento implements OnInit {
     linkExterno: '',
     endereco: '',
     bairro: '',
-    latitude: -8.0578,
-    longitude: -34.8829,
+    latitude: null as number | null,
+    longitude: null as number | null,
     categoriaIds: [] as number[]
   };
 
@@ -69,6 +74,49 @@ export class CriarEvento implements OnInit {
     return this.evento.categoriaIds.includes(catId);
   }
 
+  onEnderecoChange(): void {
+    if (this.geocodingStatus === 'success') {
+      this.geocodingStatus = 'idle';
+      this.evento.latitude = null;
+      this.evento.longitude = null;
+      this.enderecoResolvido = '';
+    }
+  }
+
+  buscarLocalizacao(): void {
+    if (!this.evento.endereco.trim()) {
+      this.showToast('Digite um endereço para buscar a localização.');
+      return;
+    }
+
+    this.geocodingStatus = 'loading';
+
+    const query = [this.evento.endereco, this.evento.bairro, 'Recife', 'Pernambuco', 'Brasil']
+      .filter(Boolean)
+      .join(', ');
+
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=1&countrycodes=br`;
+    const headers = new HttpHeaders({ 'Accept-Language': 'pt-BR' });
+
+    this.http.get<NominatimResult[]>(url, { headers }).pipe(timeout(8000)).subscribe({
+      next: (results) => {
+        if (results && results.length > 0) {
+          this.evento.latitude = parseFloat(results[0].lat);
+          this.evento.longitude = parseFloat(results[0].lon);
+          this.enderecoResolvido = results[0].display_name;
+          this.geocodingStatus = 'success';
+        } else {
+          this.geocodingStatus = 'error';
+          this.showToast('Endereço não encontrado. Tente ser mais específico.');
+        }
+      },
+      error: () => {
+        this.geocodingStatus = 'error';
+        this.showToast('Erro ao buscar localização. Tente novamente.');
+      }
+    });
+  }
+
   submeterForm(): void {
     if (!this.evento.nome || !this.evento.dataHora || !this.evento.endereco) {
       this.showToast('Por favor, preencha os campos obrigatórios!');
@@ -77,6 +125,11 @@ export class CriarEvento implements OnInit {
 
     if (this.evento.categoriaIds.length === 0) {
       this.showToast('Selecione ao menos uma categoria para o evento!');
+      return;
+    }
+
+    if (this.evento.latitude === null || this.evento.longitude === null) {
+      this.showToast('Use o botão "Buscar Localização" para confirmar o endereço no mapa.');
       return;
     }
 
@@ -89,8 +142,8 @@ export class CriarEvento implements OnInit {
       preco: this.evento.preco === null ? 0.0 : this.evento.preco,
       linkExterno: this.evento.linkExterno || undefined,
       organizadorId: this.organizadorId,
-      latitude: this.evento.latitude,
-      longitude: this.evento.longitude,
+      latitude: this.evento.latitude as number,
+      longitude: this.evento.longitude as number,
       endereco: this.evento.endereco,
       bairro: this.evento.bairro || undefined,
       categoriaIds: this.evento.categoriaIds,
@@ -116,4 +169,10 @@ export class CriarEvento implements OnInit {
     this.toastMessage = message;
     setTimeout(() => this.toastMessage = '', 3000);
   }
+}
+
+interface NominatimResult {
+  lat: string;
+  lon: string;
+  display_name: string;
 }
