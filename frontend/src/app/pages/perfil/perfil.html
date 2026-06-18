@@ -20,7 +20,7 @@
         <div class="block-title">MEUS INTERESSES</div>
         <p class="block-desc">Selecione os temas que você deseja ver com mais frequência.</p>
         <div class="interests-wrap">
-          @for (tag of interestTags; track tag.label) {
+          @for (tag of interestTags(); track tag.label) {
             <button class="interest-tag"
                     [class.active]="tag.active"
                     (click)="toggleInterest(tag)">{{ tag.label }}</button>
