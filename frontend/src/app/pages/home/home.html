@@ -35,7 +35,7 @@
     </div>
 
     <div class="events-grid">
-        @for (evento of eventosFiltrados; track evento.id) {
+        @for (evento of eventosFiltrados(); track evento.id) {
             <div class="event-card" (click)="abrirModal(evento)">
                 <div class="card-body">
                     <span class="card-category">{{ evento.categoria }}</span>
@@ -130,8 +130,8 @@
 
     </div>
 
-    @if (toastMessage) {
-        <div class="toast">{{ toastMessage }}</div>
+    @if (toastMessage()) {
+        <div class="toast">{{ toastMessage() }}</div>
     }
 </section>
 
