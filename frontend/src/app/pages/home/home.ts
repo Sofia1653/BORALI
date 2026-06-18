@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { EventoService } from '../../services/evento.service';
@@ -36,9 +36,9 @@ export class Home implements OnInit {
   }
   
   eventos: EventoUI[] = [];
-  favoritosIds: Set<number> = new Set<number>();
+  readonly favoritosIds = signal<Set<number>>(new Set<number>());
   eventoSelecionado: EventoUI | null = null;
-  toastMessage = '';
+  readonly toastMessage = signal<string>('');
 
   filtros = [
     'Todos',
@@ -51,7 +51,7 @@ export class Home implements OnInit {
   ];
 
   filtroAtivo = 'Todos';
-  eventosFiltrados: EventoUI[] = [];
+  readonly eventosFiltrados = signal<EventoUI[]>([]);
 
   ngOnInit(): void {
     this.carregarDados();
@@ -63,7 +63,7 @@ export class Home implements OnInit {
       // 1. Carrega favoritos do usuário
       this.agendaService.listarFavoritosUsuario(id).subscribe({
         next: (favoritos) => {
-          this.favoritosIds = new Set(favoritos.map(f => f.id));
+          this.favoritosIds.set(new Set(favoritos.map(f => f.id)));
           // 2. Carrega eventos
           this.carregarEventos();
         },
@@ -73,7 +73,7 @@ export class Home implements OnInit {
         }
       });
     } else {
-      this.favoritosIds = new Set<number>();
+      this.favoritosIds.set(new Set<number>());
       this.carregarEventos();
     }
   }
@@ -174,20 +174,20 @@ export class Home implements OnInit {
   filtrarEventos(filtro: string) {
     this.filtroAtivo = filtro;
     if (filtro === 'Todos') {
-      this.eventosFiltrados = this.eventos;
+      this.eventosFiltrados.set(this.eventos);
       return;
     }
 
     if (filtro === 'Gratuitos') {
-      this.eventosFiltrados = this.eventos.filter(
+      this.eventosFiltrados.set(this.eventos.filter(
         evento => evento.gratuito
-      );
+      ));
       return;
     }
 
-    this.eventosFiltrados = this.eventos.filter(
+    this.eventosFiltrados.set(this.eventos.filter(
       evento => evento.categoria.toLowerCase() === filtro.toLowerCase()
-    );
+    ));
   }
 
   abrirModal(evento: EventoUI): void {
@@ -201,7 +201,7 @@ export class Home implements OnInit {
   }
 
   estaFavoritado(eventoId: number): boolean {
-    return this.favoritosIds.has(eventoId);
+    return this.favoritosIds().has(eventoId);
   }
 
   toggleInteresse(evento: EventoUI): void {
@@ -218,7 +218,10 @@ export class Home implements OnInit {
       this.agendaService.desfavoritar(id, evento.id).subscribe({
 
         next: () => {
-          this.favoritosIds.delete(evento.id);
+          this.favoritosIds.update(set => {
+            set.delete(evento.id);
+            return new Set(set);
+          });
 
           this.showToast('Removido do seu planejamento');
         },
@@ -235,7 +238,10 @@ export class Home implements OnInit {
 
         next: () => {
 
-          this.favoritosIds.add(evento.id);
+          this.favoritosIds.update(set => {
+            set.add(evento.id);
+            return new Set(set);
+          });
 
           this.showToast('Adicionado ao seu planejamento!');
 
@@ -257,8 +263,8 @@ export class Home implements OnInit {
   }
 
   showToast(message: string) {
-    this.toastMessage = message;
-    setTimeout(() => this.toastMessage = '', 3000);
+    this.toastMessage.set(message);
+    setTimeout(() => this.toastMessage.set(''), 3000);
   }
 }
 

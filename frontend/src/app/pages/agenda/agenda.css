@@ -31,7 +31,7 @@
             margin-top: 40px;
         }
 
-        .agenda-list { max-width: 860px; }
+        .agenda-list { max-width: 860px; margin: 0 auto; }
 
         .agenda-item {
             display: flex;
