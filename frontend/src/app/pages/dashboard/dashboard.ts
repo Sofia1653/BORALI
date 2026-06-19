@@ -299,7 +299,8 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private async initMap(): Promise<void> {
-    const L = await import('leaflet');
+    const leafletModule = await import('leaflet');
+    const L = (leafletModule as any).default ?? leafletModule;
     this.map = L.map('heatmap', { center: [-8.09, -34.95], zoom: 10 });
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -331,7 +332,8 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
 
   private async updateHeatmap(): Promise<void> {
     if (!this.map) return;
-    const L = await import('leaflet');
+    const leafletModule = await import('leaflet');
+    const L = (leafletModule as any).default ?? leafletModule;
     if (this.heatGroup) { this.map.removeLayer(this.heatGroup); }
 
     const counts: Record<string, number> = {};
