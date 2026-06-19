@@ -25,7 +25,8 @@ export class Mapa implements OnInit, AfterViewInit {
 
   private async initMap(): Promise<void> {
     // Dynamic import to prevent SSR (Server-Side Rendering) build errors
-    const L = await import('leaflet');
+    const leafletModule = await import('leaflet');
+    const L = (leafletModule as any).default ?? leafletModule;
 
     // Centraliza o mapa em Recife
     this.map = L.map('map', {
