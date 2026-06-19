@@ -2,13 +2,14 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UsuarioResponse } from '../models/models';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/usuarios';
+  private readonly apiUrl = `${environment.apiUrl}/usuarios`;
 
   buscarUsuarioPorId(id: number): Observable<UsuarioResponse> {
     return this.http.get<UsuarioResponse>(`${this.apiUrl}/${id}`);

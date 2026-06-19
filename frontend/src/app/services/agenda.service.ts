@@ -2,13 +2,14 @@ import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map, switchMap, tap } from 'rxjs';
 import { EventoResponse } from '../models/models';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AgendaService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/favoritos';
+  private readonly apiUrl = `${environment.apiUrl}/favoritos`;
 
   readonly favoritos = signal<EventoResponse[]>([]);
 
